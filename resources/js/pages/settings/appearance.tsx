@@ -11,7 +11,7 @@ import ThemeToggleTab from '@/components/theme-toggle-tab';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Configuración de apariencia',
-        href: '/settings/appearance',
+        href: '/sys/settings/appearance',
     },
 ];
 

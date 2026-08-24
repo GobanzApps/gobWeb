@@ -12,7 +12,7 @@ import { Settings } from 'lucide-react';
 const platformItems: NavItem[] = [
     {
         title: 'Panel Principal',
-        url: '/dashboard',
+        url: '/sys/dashboard',
         icon: LayoutGrid,
     },
 ];
@@ -20,25 +20,25 @@ const platformItems: NavItem[] = [
 const adminItems: NavItem[] = [
     {
         title: 'Personal',
-        url: '/personnel',
+        url: '/sys/personnel',
         icon: BookUser,
         permission: 'personnel.view',
     },
     {
         title: 'Cargos',
-        url: '/positions',
+        url: '/sys/positions',
         icon: Tag,
         permission: 'positions.view',
     },
     {
         title: 'Usuarios',
-        url: '/users',
+        url: '/sys/users',
         icon: User,
         permission: 'users.view',
     },
     {
         title: 'Roles y Permisos',
-        url: '/roles',
+        url: '/sys/roles',
         icon: Shield,
         permission: 'roles.view',
     },

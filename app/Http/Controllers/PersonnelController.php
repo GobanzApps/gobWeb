@@ -41,7 +41,7 @@ class PersonnelController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Personnel/Index', [
+        return Inertia::render('Sys/Personnel/Index', [
             'personnels' => $personnels,
             'filters' => [
                 'search' => $search,
@@ -53,7 +53,7 @@ class PersonnelController extends Controller
 
     public function create()
     {
-        return Inertia::render('Personnel/Create', [
+        return Inertia::render('Sys/Personnel/Create', [
             'positions' => Position::where('active', true)->get(),
             'emergencyRelationships' => EmergencyContactRelationship::all(),
         ]);
@@ -175,7 +175,7 @@ class PersonnelController extends Controller
             ->latest('start_date')
             ->get();
 
-        return Inertia::render('Personnel/Show', [
+        return Inertia::render('Sys/Personnel/Show', [
             'personnel' => $personnel,
             'current_position' => $currentPosition,
             'history' => $history,
@@ -204,7 +204,7 @@ class PersonnelController extends Controller
         $personnel->load('emergencyContacts');
         $emergencyRelationships = EmergencyContactRelationship::all();
 
-        return Inertia::render('Personnel/Edit', [
+        return Inertia::render('Sys/Personnel/Edit', [
             'personnel' => $personnel,
             'positions' => $positions,
             'current_position_id' => $currentPosition?->position_id,

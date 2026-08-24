@@ -17,7 +17,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Usuario y contraseña',
-        href: '/settings/password',
+        href: '/sys/settings/password',
     },
 ];
 

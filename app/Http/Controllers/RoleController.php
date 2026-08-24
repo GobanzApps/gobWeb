@@ -32,7 +32,7 @@ class RoleController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Roles&Permissions/Roles/Index', [
+        return Inertia::render('Sys/Roles&Permissions/Roles/Index', [
             'roles' => $roles,
             'filters' => [
                 'search' => $search,
@@ -63,7 +63,7 @@ class RoleController extends Controller
             })
             ->values();
 
-        return Inertia::render('Roles&Permissions/Roles/Create', [
+        return Inertia::render('Sys/Roles&Permissions/Roles/Create', [
             'permissionGroups' => $permissionGroups,
         ]);
     }
@@ -99,7 +99,7 @@ class RoleController extends Controller
             'users',
         ]);
 
-        return Inertia::render('Roles&Permissions/Roles/Show', [
+        return Inertia::render('Sys/Roles&Permissions/Roles/Show', [
             'role' => $role,
         ]);
     }
@@ -129,7 +129,7 @@ class RoleController extends Controller
             })
             ->values();
 
-        return Inertia::render('Roles&Permissions/Roles/Edit', [
+        return Inertia::render('Sys/Roles&Permissions/Roles/Edit', [
             'role' => $role,
             'permissionGroups' => $permissionGroups,
         ]);

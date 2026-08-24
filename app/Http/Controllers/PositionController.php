@@ -31,7 +31,7 @@ class PositionController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Position/Index', [
+        return Inertia::render('Sys/Position/Index', [
             'positions' => $positions,
             'filters' => [
                 'search' => $search,
@@ -43,7 +43,7 @@ class PositionController extends Controller
 
     public function create()
     {
-        return Inertia::render('Position/Create');
+        return Inertia::render('Sys/Position/Create');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
-        return Inertia::render('Position/Edit', [
+        return Inertia::render('Sys/Position/Edit', [
             'position' => $position,
         ]);
     }

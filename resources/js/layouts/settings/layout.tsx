@@ -8,17 +8,17 @@ import { Link } from '@inertiajs/react';
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Perfil',
-        url: '/settings/profile',
+        url: '/sys/settings/profile',
         icon: null,
     },
     {
         title: 'Usuario y Contraseña',
-        url: '/settings/password',
+        url: '/sys/settings/password',
         icon: null,
     },
     {
         title: 'Apariencia',
-        url: '/settings/appearance',
+        url: '/sys/settings/appearance',
         icon: null,
     },
 ];

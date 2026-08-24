@@ -26,7 +26,7 @@ class PermissionController extends Controller
             return explode('.', $permission->name)[0];
         });
 
-        return Inertia::render('Roles&Permissions/Permissions/Index', [
+        return Inertia::render('Sys/Roles&Permissions/Permissions/Index', [
             'permissions' => $permissions,
         ]);
     }
@@ -35,7 +35,7 @@ class PermissionController extends Controller
 
     public function create()
     {
-        return Inertia::render('Roles&Permissions/Permissions/Create');
+        return Inertia::render('Sys/Roles&Permissions/Permissions/Create');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ class PermissionController extends Controller
 
     public function show(Permission $permission)
     {
-        return Inertia::render('Roles&Permissions/Permissions/Show', [
+        return Inertia::render('Sys/Roles&Permissions/Permissions/Show', [
             'permission' => $permission,
         ]);
     }
@@ -68,7 +68,7 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission)
     {
-        return Inertia::render('Roles&Permissions/Permissions/Edit', [
+        return Inertia::render('Sys/Roles&Permissions/Permissions/Edit', [
             'permission' => $permission,
         ]);
     }

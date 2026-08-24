@@ -124,7 +124,7 @@ export const columns: ColumnDef<Personnel>[] = [
                 <div className="flex justify-end items-center gap-2">
 
                     <a
-                        href={`/personnel/${personnel.id}`}
+                        href={`/sys/personnel/${personnel.id}`}
                         title="Ver"
                         className="
                             inline-flex h-9 w-9 items-center justify-center
@@ -141,7 +141,7 @@ export const columns: ColumnDef<Personnel>[] = [
 
                     <Can permission="personnel.edit">
                         <a
-                            href={`/personnel/${personnel.id}/edit`}
+                            href={`/sys/personnel/${personnel.id}/edit`}
                             title="Editar"
                             className="
                                 inline-flex h-9 w-9 items-center justify-center

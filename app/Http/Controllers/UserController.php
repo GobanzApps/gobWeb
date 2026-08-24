@@ -44,7 +44,7 @@ class UserController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Users/Index', [
+        return Inertia::render('Sys/Users/Index', [
             'users' => $users,
             'roles' => Role::orderBy('name')->get(),
             'filters' => [
@@ -86,7 +86,7 @@ class UserController extends Controller
             })
             ->values();
 
-        return Inertia::render('Users/Create', [
+        return Inertia::render('Sys/Users/Create', [
             'personnels' => $personnels,
             'roles' => $roles,
             'permissionGroups' => $permissionGroups,
@@ -144,7 +144,7 @@ class UserController extends Controller
                 ->first()
         )->position;
 
-        return Inertia::render('Users/Show', [
+        return Inertia::render('Sys/Users/Show', [
             'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -210,7 +210,7 @@ class UserController extends Controller
             })
             ->values();
 
-        return Inertia::render('Users/Edit', [
+        return Inertia::render('Sys/Users/Edit', [
             'user' => $user,
 
             'personnels' => $personnels,
