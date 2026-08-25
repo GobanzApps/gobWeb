@@ -7,10 +7,10 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\WebController;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', [WebController::class, 'index'])->name('home');
+// Route::get('/servicios', [WebController::class, 'servicios'])->name('servicios');
 
 /*
 |--------------------------------------------------------------------------
