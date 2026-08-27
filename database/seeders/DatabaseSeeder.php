@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EstadoPlan;
 use App\Models\Permission;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             UserSeeder::class,
             EmergencyContactRelationshipSeeder::class,
+            EstadoPlanSeeder::class,
         ]);
     }
 }

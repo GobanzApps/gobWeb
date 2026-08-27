@@ -9,6 +9,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\WebController;
 
+use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\PublicacionController;
+use App\Http\Controllers\EventoController;
+use App\Http\Controllers\GabineteController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\EstadoPlanController;
+
 Route::get('/', [WebController::class, 'index'])->name('home');
 // Route::get('/servicios', [WebController::class, 'servicios'])->name('servicios');
 
@@ -38,6 +45,21 @@ Route::prefix('sys')->group(function () {
 
         Route::resource('users', UserController::class);
         Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+
+    /*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+        Route::resource('noticias', NoticiaController::class);
+
+        Route::resource('publicaciones', PublicacionController::class);
+
+        Route::resource('eventos', EventoController::class);
+
+        Route::resource('gabinetes', GabineteController::class);
+
+        Route::resource('planes', PlanController::class)->parameters(['planes' => 'plan']);
+        Route::patch('planes/{plan}/toggle-status', [PlanController::class, 'toggleStatus'])->name('planes.toggle-status');
+        Route::resource('estados-plan', EstadoPlanController::class)->parameters(['estados-plan' => 'estado_plan']);
+        Route::patch('estados-plan/{estado_plan}/toggle-status', [EstadoPlanController::class, 'toggleStatus'])->name('estados-plan.toggle-status');
     });
 
     require __DIR__.'/auth.php';

@@ -48,6 +48,47 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'permissions.create', 'display_name' => 'Crear Permisos'],
             ['name' => 'permissions.edit', 'display_name' => 'Editar Permisos'],
             ['name' => 'permissions.delete', 'display_name' => 'Eliminar Permisos'],
+
+    /*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+            // NOTICIAS
+            ['name' => 'noticias.view', 'display_name' => 'Ver Noticias'],
+            ['name' => 'noticias.create', 'display_name' => 'Crear Noticias'],
+            ['name' => 'noticias.edit', 'display_name' => 'Editar Noticias'],
+            ['name' => 'noticias.delete', 'display_name' => 'Eliminar Noticias'],
+
+            // PUBLICACIONES
+            ['name' => 'publicaciones.view', 'display_name' => 'Ver Publicaciones'],
+            ['name' => 'publicaciones.create', 'display_name' => 'Crear Publicaciones'],
+            ['name' => 'publicaciones.edit', 'display_name' => 'Editar Publicaciones'],
+            ['name' => 'publicaciones.delete', 'display_name' => 'Eliminar Publicaciones'],
+
+            // EVENTOS
+            ['name' => 'eventos.view', 'display_name' => 'Ver Eventos'],
+            ['name' => 'eventos.create', 'display_name' => 'Crear Eventos'],
+            ['name' => 'eventos.edit', 'display_name' => 'Editar Eventos'],
+            ['name' => 'eventos.delete', 'display_name' => 'Eliminar Eventos'],
+
+            // GABINETES
+            ['name' => 'gabinetes.view', 'display_name' => 'Ver Gabinetes'],
+            ['name' => 'gabinetes.create', 'display_name' => 'Crear Gabinetes'],
+            ['name' => 'gabinetes.edit', 'display_name' => 'Editar Gabinetes'],
+            ['name' => 'gabinetes.delete', 'display_name' => 'Eliminar Gabinetes'],
+            ['name' => 'gabinetes.toggle-status', 'display_name' => 'Activar o Desactivar Gabinetes'],
+
+            // PLANES
+            ['name' => 'planes.view', 'display_name' => 'Ver Planes'],
+            ['name' => 'planes.create', 'display_name' => 'Crear Planes'],
+            ['name' => 'planes.edit', 'display_name' => 'Editar Planes'],
+            ['name' => 'planes.delete', 'display_name' => 'Eliminar Planes'],
+            ['name' => 'planes.toggle-status', 'display_name' => 'Publicar o Despublicar Planes'],
+
+            // ESTADOS DE PLAN
+            ['name' => 'estados-plan.view', 'display_name' => 'Ver Estados de Plan'],
+            ['name' => 'estados-plan.create', 'display_name' => 'Crear Estados de Plan'],
+            ['name' => 'estados-plan.edit', 'display_name' => 'Editar Estados de Plan'],
+            ['name' => 'estados-plan.delete', 'display_name' => 'Eliminar Estados de Plan'],
+            ['name' => 'estados-plan.toggle-status', 'display_name' => 'Activar o Desactivar Estados de Plan'],
         ];
 
         foreach ($permissions as $permission) {
