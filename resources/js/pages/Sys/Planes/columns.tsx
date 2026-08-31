@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, FileCheck, FileX } from 'lucide-react';
+import { Eye, Pencil, FileCheck, FileX, Trash2 } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { Can } from '@/components/can';
 import { notify } from '@/lib/notify';
@@ -129,8 +129,25 @@ export const columns: ColumnDef<Plan>[] = [
                 );
             };
 
+            const deletePlan = () => {
+                router.delete(
+                    route('planes.destroy', plan.id),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            notify.success('Plan eliminado correctamente.');
+                        },
+                        onError: () => {
+                            notify.error('No se pudo eliminar el plan.');
+                        },
+                    }
+                );
+            };
+
             return (
                 <div className="flex items-center justify-end gap-2">
+
+                    {/* Ver */}
                     <a
                         href={route('planes.show', plan.id)}
                         title="Ver"
@@ -139,6 +156,7 @@ export const columns: ColumnDef<Plan>[] = [
                         <Eye className="h-4 w-4" />
                     </a>
 
+                    {/* Editar */}
                     <Can permission="planes.edit">
                         <a
                             href={route('planes.edit', plan.id)}
@@ -149,6 +167,7 @@ export const columns: ColumnDef<Plan>[] = [
                         </a>
                     </Can>
 
+                    {/* Publicar / Despublicar */}
                     <Can permission="planes.toggle-status">
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -178,9 +197,7 @@ export const columns: ColumnDef<Plan>[] = [
                             <AlertDialogContent>
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        {plan.publicado
-                                            ? '¿Despublicar plan?'
-                                            : '¿Publicar plan?'}
+                                        {plan.publicado ? '¿Despublicar plan?' : '¿Publicar plan?'}
                                     </AlertDialogTitle>
 
                                     <AlertDialogDescription>
@@ -191,19 +208,50 @@ export const columns: ColumnDef<Plan>[] = [
                                 </AlertDialogHeader>
 
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        Cancelar
-                                    </AlertDialogCancel>
-
+                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
                                     <AlertDialogAction onClick={togglePublication}>
-                                        {plan.publicado
-                                            ? 'Despublicar plan'
-                                            : 'Publicar plan'}
+                                        {plan.publicado ? 'Despublicar plan' : 'Publicar plan'}
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
                     </Can>
+
+                    {/* Eliminar */}
+                    <Can permission="planes.delete">
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button
+                                    type="button"
+                                    title="Eliminar plan"
+                                    className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background text-red-600 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
+                            </AlertDialogTrigger>
+
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        ¿Eliminar plan?
+                                    </AlertDialogTitle>
+
+                                    <AlertDialogDescription>
+                                        Esta acción eliminará permanentemente el plan "{plan.titulo}" y todas sus imágenes. Esta acción no se puede deshacer.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+
+                                    <AlertDialogAction onClick={deletePlan}>
+                                        Eliminar plan
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </Can>
+
                 </div>
             );
         },
