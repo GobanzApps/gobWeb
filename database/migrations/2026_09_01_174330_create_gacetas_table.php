@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('publicaciones', function (Blueprint $table) {
+        Schema::create('gacetas', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
             $table->text('descripcion')->nullable();
@@ -20,6 +20,7 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->unsignedBigInteger('updated_by')->nullable();
+
             $table->foreign('updated_by')
                 ->references('id')
                 ->on('users')
@@ -31,6 +32,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('publicaciones');
+        Schema::dropIfExists('gacetas');
     }
 };

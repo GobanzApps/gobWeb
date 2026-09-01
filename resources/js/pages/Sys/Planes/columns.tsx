@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, FileCheck, FileX, Trash2 } from 'lucide-react';
+import { Eye, Pencil, FileCheck, FileX, Trash2, Globe, Globe2, GlobeLock } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { Can } from '@/components/can';
 import { notify } from '@/lib/notify';
@@ -182,13 +182,13 @@ export const columns: ColumnDef<Plan>[] = [
                                 >
                                     {plan.publicado ? (
                                         <>
-                                            <FileCheck className="h-4 w-4 group-hover:hidden" />
-                                            <FileX className="hidden h-4 w-4 group-hover:block" />
+                                            <Globe className="h-4 w-4 group-hover:hidden" />
+                                            <GlobeLock className="hidden h-4 w-4 group-hover:block" />
                                         </>
                                     ) : (
                                         <>
-                                            <FileX className="h-4 w-4 group-hover:hidden" />
-                                            <FileCheck className="hidden h-4 w-4 group-hover:block" />
+                                            <GlobeLock className="h-4 w-4 group-hover:hidden" />
+                                            <Globe className="hidden h-4 w-4 group-hover:block" />
                                         </>
                                     )}
                                 </button>

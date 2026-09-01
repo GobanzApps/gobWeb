@@ -10,7 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\WebController;
 
 use App\Http\Controllers\NoticiaController;
-use App\Http\Controllers\PublicacionController;
+use App\Http\Controllers\GacetaController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\GabineteController;
 use App\Http\Controllers\PlanController;
@@ -50,7 +50,7 @@ Route::prefix('sys')->group(function () {
 
         Route::resource('noticias', NoticiaController::class);
 
-        Route::resource('publicaciones', PublicacionController::class);
+        Route::resource('gacetas', GacetaController::class);
 
         Route::resource('eventos', EventoController::class);
 

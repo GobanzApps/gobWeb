@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Power, PowerOff, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2, ToggleRight, ToggleLeft } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { Can } from '@/components/can';
 import { notify } from '@/lib/notify';
@@ -160,13 +160,13 @@ export const columns: ColumnDef<EstadoPlan>[] = [
                                 >
                                     {estadoPlan.activo ? (
                                         <>
-                                            <Power className="h-4 w-4 group-hover:hidden" />
-                                            <PowerOff className="hidden h-4 w-4 group-hover:block" />
+                                            <ToggleRight className="h-4 w-4 group-hover:hidden" />
+                                            <ToggleLeft className="hidden h-4 w-4 group-hover:block" />
                                         </>
                                     ) : (
                                         <>
-                                            <PowerOff className="h-4 w-4 group-hover:hidden" />
-                                            <Power className="hidden h-4 w-4 group-hover:block" />
+                                            <ToggleLeft className="h-4 w-4 group-hover:hidden" />
+                                            <ToggleRight className="hidden h-4 w-4 group-hover:block" />
                                         </>
                                     )}
                                 </button>
