@@ -21,6 +21,7 @@ class EventoController extends Controller
         $this->middleware('permission:eventos.create')->only(['create', 'store']);
         $this->middleware('permission:eventos.edit')->only(['edit', 'update']);
         $this->middleware('permission:eventos.delete')->only(['destroy']);
+        $this->middleware('permission:eventos.toggle-status')->only(['toggleStatus']);
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -175,5 +176,19 @@ class EventoController extends Controller
         return redirect()
             ->route('eventos.index')
             ->with('success', 'Evento eliminado correctamente.');
+    }
+
+    /*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    public function toggleStatus(Evento $evento): RedirectResponse
+    {
+        $evento->update([
+            'publicado' => !$evento->publicado,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', $evento->publicado ? 'Evento publicado correctamente.' : 'Evento despublicado correctamente.');
     }
 }

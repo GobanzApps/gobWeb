@@ -20,6 +20,7 @@ class GacetaController extends Controller
         $this->middleware('permission:gacetas.create')->only(['create', 'store']);
         $this->middleware('permission:gacetas.edit')->only(['edit', 'update']);
         $this->middleware('permission:gacetas.delete')->only(['destroy']);
+        $this->middleware('permission:gacetas.toggle-status')->only(['toggleStatus']);
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -138,5 +139,19 @@ class GacetaController extends Controller
         return redirect()
             ->route('gacetas.index')
             ->with('success', 'Gaceta eliminada correctamente.');
+    }
+
+    /*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    public function toggleStatus(Gaceta $gaceta): RedirectResponse
+    {
+        $gaceta->update([
+            'publicado' => !$gaceta->publicado,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', $gaceta->publicado ? 'Gaceta publicada correctamente.' : 'Gaceta despublicada correctamente.');
     }
 }

@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Trash2, FileText } from 'lucide-react';
+import { Eye, Pencil, Trash2, FileText, Globe, GlobeLock } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { Can } from '@/components/can';
 import { notify } from '@/lib/notify';
@@ -100,16 +100,20 @@ export const columns: ColumnDef<Gaceta>[] = [
                     route('gacetas.destroy', gaceta.id),
                     {
                         preserveScroll: true,
-                        onSuccess: () => {
-                            notify.success(
-                                'Gaceta eliminada correctamente.'
-                            );
-                        },
-                        onError: () => {
-                            notify.error(
-                                'No se pudo eliminar la gaceta.'
-                            );
-                        },
+                        onSuccess: () => {notify.success('Gaceta eliminada correctamente.');},
+                        onError: () => {notify.error('No se pudo eliminar la gaceta.');},
+                    }
+                );
+            };
+
+            const togglePublication = () => {
+                router.patch(
+                    route('gacetas.toggle-status', gaceta.id),
+                    {},
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {notify.success(gaceta.publicado ? 'Gaceta despublicada correctamente.' : 'Gaceta publicada correctamente.');},
+                        onError: () => {notify.error('No se pudo cambiar el estado de publicación de la gaceta.');},
                     }
                 );
             };
@@ -135,6 +139,69 @@ export const columns: ColumnDef<Gaceta>[] = [
                         >
                             <Pencil className="h-4 w-4" />
                         </a>
+                    </Can>
+
+                    {/* Publicar / Despublicar */}
+                    <Can permission="gacetas.toggle-status">
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button
+                                    type="button"
+                                    title={
+                                        gaceta.publicado
+                                            ? 'Despublicar gaceta'
+                                            : 'Publicar gaceta'
+                                    }
+                                    className={`group inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background transition-colors ${
+                                        gaceta.publicado
+                                            ? 'text-green-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600'
+                                            : 'text-red-600 hover:border-green-300 hover:bg-green-50 hover:text-green-600'
+                                    }`}
+                                >
+                                    {gaceta.publicado ? (
+                                        <>
+                                            <Globe className="h-4 w-4 group-hover:hidden" />
+                                            <GlobeLock className="hidden h-4 w-4 group-hover:block" />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <GlobeLock className="h-4 w-4 group-hover:hidden" />
+                                            <Globe className="hidden h-4 w-4 group-hover:block" />
+                                        </>
+                                    )}
+                                </button>
+                            </AlertDialogTrigger>
+
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        {gaceta.publicado
+                                            ? '¿Despublicar gaceta?'
+                                            : '¿Publicar gaceta?'}
+                                    </AlertDialogTitle>
+
+                                    <AlertDialogDescription>
+                                        {gaceta.publicado
+                                            ? 'Al despublicar esta gaceta dejará de estar disponible públicamente en el sitio web.'
+                                            : 'Al publicar esta gaceta estará disponible públicamente en el sitio web de la Gobernación.'}
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancelar
+                                    </AlertDialogCancel>
+
+                                    <AlertDialogAction
+                                        onClick={togglePublication}
+                                    >
+                                        {gaceta.publicado
+                                            ? 'Despublicar gaceta'
+                                            : 'Publicar gaceta'}
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </Can>
 
                     {/* Eliminar */}

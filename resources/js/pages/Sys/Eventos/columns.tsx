@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2, Globe, GlobeLock } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { Can } from '@/components/can';
 import { notify } from '@/lib/notify';
@@ -133,16 +133,20 @@ export const columns: ColumnDef<Evento>[] = [
                     route('eventos.destroy', evento.id),
                     {
                         preserveScroll: true,
-                        onSuccess: () => {
-                            notify.success(
-                                'Evento eliminado correctamente.'
-                            );
-                        },
-                        onError: () => {
-                            notify.error(
-                                'No se pudo eliminar el evento.'
-                            );
-                        },
+                        onSuccess: () => {notify.success('Evento eliminado correctamente.');},
+                        onError: () => {notify.error('No se pudo eliminar el evento.');},
+                    }
+                );
+            };
+
+            const togglePublication = () => {
+                router.patch(
+                    route('eventos.toggle-status', evento.id),
+                    {},
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {notify.success(evento.publicado ? 'Evento despublicado correctamente.' : 'Evento publicado correctamente.');},
+                        onError: () => {notify.error('No se pudo cambiar el estado de publicación del evento.');},
                     }
                 );
             };
@@ -168,6 +172,67 @@ export const columns: ColumnDef<Evento>[] = [
                         >
                             <Pencil className="h-4 w-4" />
                         </a>
+                    </Can>
+
+                    {/* Publicar / Despublicar */}
+                    <Can permission="eventos.toggle-status">
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button
+                                    type="button"
+                                    title={
+                                        evento.publicado
+                                            ? 'Despublicar evento'
+                                            : 'Publicar evento'
+                                    }
+                                    className={`group inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background transition-colors ${
+                                        evento.publicado
+                                            ? 'text-green-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600'
+                                            : 'text-red-600 hover:border-green-300 hover:bg-green-50 hover:text-green-600'
+                                    }`}
+                                >
+                                    {evento.publicado ? (
+                                        <>
+                                            <Globe className="h-4 w-4 group-hover:hidden" />
+                                            <GlobeLock className="hidden h-4 w-4 group-hover:block" />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <GlobeLock className="h-4 w-4 group-hover:hidden" />
+                                            <Globe className="hidden h-4 w-4 group-hover:block" />
+                                        </>
+                                    )}
+                                </button>
+                            </AlertDialogTrigger>
+
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        {evento.publicado
+                                            ? '¿Despublicar evento?'
+                                            : '¿Publicar evento?'}
+                                    </AlertDialogTitle>
+
+                                    <AlertDialogDescription>
+                                        {evento.publicado
+                                            ? 'Al despublicar este evento dejará de estar disponible públicamente en el sitio web.'
+                                            : 'Al publicar este evento estará disponible públicamente en el sitio web de la Gobernación.'}
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancelar
+                                    </AlertDialogCancel>
+
+                                    <AlertDialogAction onClick={togglePublication}>
+                                        {evento.publicado
+                                            ? 'Despublicar evento'
+                                            : 'Publicar evento'}
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </Can>
 
                     {/* Eliminar */}

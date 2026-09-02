@@ -56,18 +56,21 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'noticias.create', 'display_name' => 'Crear Noticias'],
             ['name' => 'noticias.edit', 'display_name' => 'Editar Noticias'],
             ['name' => 'noticias.delete', 'display_name' => 'Eliminar Noticias'],
+            ['name' => 'noticias.toggle-status', 'display_name' => 'Activar o Desactivar Noticias'],
 
             // GACETAS
             ['name' => 'gacetas.view', 'display_name' => 'Ver Gacetas'],
             ['name' => 'gacetas.create', 'display_name' => 'Crear Gacetas'],
             ['name' => 'gacetas.edit', 'display_name' => 'Editar Gacetas'],
             ['name' => 'gacetas.delete', 'display_name' => 'Eliminar Gacetas'],
+            ['name' => 'gacetas.toggle-status', 'display_name' => 'Activar o Desactivar Gacetas'],
 
             // EVENTOS
             ['name' => 'eventos.view', 'display_name' => 'Ver Eventos'],
             ['name' => 'eventos.create', 'display_name' => 'Crear Eventos'],
             ['name' => 'eventos.edit', 'display_name' => 'Editar Eventos'],
             ['name' => 'eventos.delete', 'display_name' => 'Eliminar Eventos'],
+            ['name' => 'eventos.toggle-status', 'display_name' => 'Activar o Desactivar Eventos'],
 
             // GABINETES
             ['name' => 'gabinetes.view', 'display_name' => 'Ver Gabinetes'],

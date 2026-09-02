@@ -49,12 +49,15 @@ Route::prefix('sys')->group(function () {
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
         Route::resource('noticias', NoticiaController::class);
+        Route::patch('noticias/{noticia}/toggle-status', [NoticiaController::class, 'toggleStatus'])->name('noticias.toggle-status');
 
         Route::resource('gacetas', GacetaController::class);
+        Route::patch('gacetas/{gaceta}/toggle-status', [GacetaController::class, 'toggleStatus'])->name('gacetas.toggle-status');
 
         Route::resource('eventos', EventoController::class);
+        Route::patch('eventos/{evento}/toggle-status', [EventoController::class, 'toggleStatus'])->name('eventos.toggle-status');
 
-        Route::resource('gabinetes', GabineteController::class);
+        // Route::resource('gabinetes', GabineteController::class);
 
         Route::resource('planes', PlanController::class)->parameters(['planes' => 'plan']);
         Route::patch('planes/{plan}/toggle-status', [PlanController::class, 'toggleStatus'])->name('planes.toggle-status');
