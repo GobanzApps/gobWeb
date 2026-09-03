@@ -9,6 +9,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\WebController;
 
+use App\Http\Controllers\DashboardController;
+
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\GacetaController;
 use App\Http\Controllers\EventoController;
@@ -30,9 +32,7 @@ Route::prefix('sys')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('dashboard', function () {
-            return Inertia::render('dashboard');
-        })->name('dashboard');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('personnel', PersonnelController::class);
         Route::patch('/personnel/{personnel}/toggle-status', [PersonnelController::class, 'toggleStatus'])->name('personnel.toggle-status');
