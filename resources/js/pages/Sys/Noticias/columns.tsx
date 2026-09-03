@@ -23,6 +23,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button } from 'node_modules/@headlessui/react/dist/components/button/button';
 
 export type Noticia = {
     id: number;
@@ -135,6 +136,25 @@ export const columns: ColumnDef<Noticia>[] = [
 
             return (
                 <div className="flex items-center justify-end gap-2">
+                    {/* Ver */}
+                    <a
+                        href={route('noticias.show', noticia.id)}
+                        title="Ver"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background text-blue-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                    >
+                        <Eye className="h-4 w-4" />
+                    </a>
+
+                    {/* Editar */}
+                    <Can permission="noticias.edit">
+                        <a
+                            href={route('noticias.edit', noticia.id)}
+                            title="Editar"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background text-yellow-600 transition-colors hover:border-yellow-300 hover:bg-yellow-50 hover:text-yellow-700"
+                        >
+                            <Pencil className="h-4 w-4" />
+                        </a>
+                    </Can>
 
                     {/* Publicar / Despublicar */}
                     <Can permission="noticias.toggle-status">
@@ -198,27 +218,7 @@ export const columns: ColumnDef<Noticia>[] = [
                             </AlertDialogContent>
                         </AlertDialog>
                     </Can>
-
-                    {/* Ver */}
-                    <a
-                        href={route('noticias.show', noticia.id)}
-                        title="Ver"
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background text-blue-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
-                    >
-                        <Eye className="h-4 w-4" />
-                    </a>
-
-                    {/* Editar */}
-                    <Can permission="noticias.edit">
-                        <a
-                            href={route('noticias.edit', noticia.id)}
-                            title="Editar"
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-background text-yellow-600 transition-colors hover:border-yellow-300 hover:bg-yellow-50 hover:text-yellow-700"
-                        >
-                            <Pencil className="h-4 w-4" />
-                        </a>
-                    </Can>
-
+    
                     {/* Eliminar */}
                     <Can permission="noticias.delete">
                         <AlertDialog>
