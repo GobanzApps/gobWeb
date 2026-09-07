@@ -17,7 +17,7 @@ export default function AuthSimpleLayout({ children, title, description }: AuthL
                         <Link href={route('home')} className="flex flex-col items-center gap-2 font-medium">
                             <div className="flex size-40 items-center justify-center rounded-md">
                                 <img 
-                                    src="/assets/img/gobLogo.png" 
+                                    src="/images/logo-anzoategui.png" 
                                     alt="Logo Gobierno" 
                                     className="size-full object-contain" 
                                 />

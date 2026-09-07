@@ -5,7 +5,7 @@ export default function AppLogo() {
         <>
             <div className=" flex aspect-square size-16 items-center justify-center rounded-md">
                 <img 
-                    src="/assets/img/gobLogo.png" 
+                    src="/images/logo-anzoategui.png" 
                     alt="Logo Gobierno" 
                     className="size-full object-contain" 
                 />
