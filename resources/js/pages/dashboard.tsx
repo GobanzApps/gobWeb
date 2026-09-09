@@ -149,7 +149,7 @@ export default function Dashboard({
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Encabezado */}
-                <div className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 via-white to-blue-50 p-6 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/30">
+                {/* <div className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 via-white to-blue-50 p-6 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/30">
                     <div className="relative z-10">
                         <p className="mb-1 text-sm font-medium text-blue-600 dark:text-blue-400">
                             Panel de administración
@@ -165,7 +165,7 @@ export default function Dashboard({
 
                     <div className="absolute -right-10 -top-16 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl" />
                     <div className="absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
-                </div>
+                </div> */}
 
                 {/* Estadísticas */}
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

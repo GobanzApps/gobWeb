@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     ArrowRight,
     CalendarDays,
@@ -10,7 +10,6 @@ import {
     MapPin,
     Menu,
     X,
-    Youtube,
 } from 'lucide-react';
 
 const planes = [
@@ -68,21 +67,21 @@ const eventos = [
     {
         dia: '18',
         mes: 'SEP',
-        titulo: 'Jornada de atención ciudadana',
+        titulo: 'El Puerto Fest',
         hora: '09:00 AM',
         lugar: 'Plaza Bolívar, Barcelona',
     },
     {
         dia: '22',
         mes: 'SEP',
-        titulo: 'Feria del Emprendimiento',
+        titulo: 'Expoferia Agroproductiva',
         hora: '10:00 AM',
         lugar: 'Parque Andrés Eloy Blanco, Lechería',
     },
     {
         dia: '27',
         mes: 'SEP',
-        titulo: 'Inauguración de obra vial',
+        titulo: 'Festival Playero',
         hora: '08:30 AM',
         lugar: 'Municipio Simón Rodríguez',
     },
@@ -91,6 +90,12 @@ const eventos = [
 export default function Welcome() {
     const [menuAbierto, setMenuAbierto] = useState<string | null>(null);
     const [mobileMenu, setMobileMenu] = useState(false);
+    const [heroSlide, setHeroSlide] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => { setHeroSlide((current) => (current + 1) % 3); }, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
     const toggleMenu = (menu: string) => {
         setMenuAbierto(menuAbierto === menu ? null : menu);
@@ -104,256 +109,70 @@ export default function Welcome() {
                 {/* HEADER */}
                 <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
                     <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-                        <Link href="/" className="shrink-0">
-                            <img
-                                src="/images/logo-anzoategui.png"
-                                alt="Gobernación del Estado Anzoátegui"
-                                className="h-16 w-auto"
-                            />
-                        </Link>
+                        <Link href="/" className="shrink-0"><img src="/images/logo-anzoategui.png" alt="Gobernación del Estado Anzoátegui" className="h-16 w-auto" /></Link>
 
                         {/* DESKTOP NAV */}
                         <nav className="hidden items-center gap-1 lg:flex">
                             {/* GOBERNACIÓN */}
                             <div className="relative">
-                                <button
-                                    onClick={() => toggleMenu('gobernacion')}
-                                    className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                                        menuAbierto === 'gobernacion'
-                                            ? 'text-blue-700'
-                                            : 'text-slate-700 hover:text-blue-700'
-                                    }`}
-                                >
-                                    Gobernación
-                                    <ChevronDown className="h-4 w-4" />
+                                <button onClick={() => toggleMenu('gobernacion')} className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${menuAbierto === 'gobernacion' ? 'text-blue-700' : 'text-slate-700 hover:text-blue-700'}`}>
+                                    Gobernación <ChevronDown className="h-4 w-4" />
                                 </button>
-
                                 {menuAbierto === 'gobernacion' && (
                                     <div className="absolute left-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-                                        <Link
-                                            href="#"
-                                            className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"
-                                        >
-                                            <span className="font-semibold">
-                                                Historia
-                                            </span>
-                                            <span className="mt-1 block text-xs text-slate-500">
-                                                Conoce la historia de nuestra
-                                                Gobernación
-                                            </span>
-                                        </Link>
-
-                                        <Link
-                                            href="#"
-                                            className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"
-                                        >
-                                            <span className="font-semibold">
-                                                Mandatos
-                                            </span>
-                                            <span className="mt-1 block text-xs text-slate-500">
-                                                Gobernantes del Estado
-                                                Anzoátegui
-                                            </span>
-                                        </Link>
-
-                                        <Link
-                                            href="#"
-                                            className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"
-                                        >
-                                            <span className="font-semibold">
-                                                Entes Adscritos
-                                            </span>
-                                            <span className="mt-1 block text-xs text-slate-500">
-                                                Instituciones y organismos
-                                            </span>
-                                        </Link>
-
-                                        <Link
-                                            href="#"
-                                            className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"
-                                        >
-                                            <span className="font-semibold">
-                                                Gabinetes
-                                            </span>
-                                            <span className="mt-1 block text-xs text-slate-500">
-                                                Conoce nuestros gabinetes
-                                            </span>
-                                        </Link>
+                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Historia</span><span className="mt-1 block text-xs text-slate-500">Conoce la historia de nuestra Gobernación</span></Link>
+                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Mandatos</span><span className="mt-1 block text-xs text-slate-500">Gobernantes del Estado Anzoátegui</span></Link>
+                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Entes Adscritos</span><span className="mt-1 block text-xs text-slate-500">Instituciones y organismos</span></Link>
+                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Gabinetes</span><span className="mt-1 block text-xs text-slate-500">Conoce nuestros gabinetes</span></Link>
                                     </div>
                                 )}
                             </div>
 
                             {/* ACERCA DE NOSOTROS */}
                             <div className="relative">
-                                <button
-                                    onClick={() => toggleMenu('acerca')}
-                                    className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                                        menuAbierto === 'acerca'
-                                            ? 'text-blue-700'
-                                            : 'text-slate-700 hover:text-blue-700'
-                                    }`}
-                                >
-                                    Acerca de nosotros
-                                    <ChevronDown className="h-4 w-4" />
+                                <button onClick={() => toggleMenu('acerca')} className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${menuAbierto === 'acerca' ? 'text-blue-700' : 'text-slate-700 hover:text-blue-700'}`}>
+                                    Acerca de nosotros <ChevronDown className="h-4 w-4" />
                                 </button>
-
                                 {menuAbierto === 'acerca' && (
                                     <div className="absolute left-1/2 top-full mt-2 w-[620px] -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-5 shadow-xl">
                                         <div className="grid grid-cols-3 gap-6">
                                             <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">
-                                                    El Estado
-                                                </p>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Historia
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Geografía
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Efemérides
-                                                </Link>
+                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">El Estado</p>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Historia</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Geografía</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Efemérides</Link>
                                             </div>
-
                                             <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">
-                                                    Identidad
-                                                </p>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Símbolos Patrimoniales
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Bandera
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Escudo
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Himno
-                                                </Link>
+                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Identidad</p>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Símbolos Patrimoniales</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Bandera</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Escudo</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Himno</Link>
                                             </div>
-
                                             <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">
-                                                    Naturaleza
-                                                </p>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Vegetación
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Flora
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm text-slate-600 hover:text-blue-700"
-                                                >
-                                                    Recursos Minerales
-                                                </Link>
-
-                                                <Link
-                                                    href="#"
-                                                    className="block py-1.5 text-sm font-medium text-blue-700 hover:text-blue-900"
-                                                >
-                                                    Patrimonios Naturales →
-                                                </Link>
+                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Naturaleza</p>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Vegetación</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Flora</Link>
+                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Recursos Minerales</Link>
+                                                <Link href="#" className="block py-1.5 text-sm font-medium text-blue-700 hover:text-blue-900">Patrimonios Naturales →</Link>
                                             </div>
                                         </div>
-
                                         <div className="mt-5 border-t pt-4">
                                             <div className="grid grid-cols-2 gap-6">
                                                 <div>
-                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">
-                                                        Cultura
-                                                    </p>
-
+                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Cultura</p>
                                                     <div className="flex flex-wrap gap-x-5 gap-y-1">
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Costumbres y
-                                                            Tradiciones
-                                                        </Link>
-
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Bailes
-                                                        </Link>
-
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Plazas
-                                                        </Link>
-
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Sitios Históricos
-                                                        </Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Costumbres y Tradiciones</Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Bailes</Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Plazas</Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Sitios Históricos</Link>
                                                     </div>
                                                 </div>
-
                                                 <div>
-                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">
-                                                        Patrimonio Natural
-                                                    </p>
-
+                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Patrimonio Natural</p>
                                                     <div className="flex flex-wrap gap-x-5 gap-y-1">
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Lagunas y Ríos
-                                                        </Link>
-
-                                                        <Link
-                                                            href="#"
-                                                            className="text-sm text-slate-600 hover:text-blue-700"
-                                                        >
-                                                            Islas y Bahías
-                                                        </Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Lagunas y Ríos</Link>
+                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Islas y Bahías</Link>
                                                     </div>
                                                 </div>
                                             </div>
@@ -362,53 +181,16 @@ export default function Welcome() {
                                 )}
                             </div>
 
-                            <a
-                                href="#planes"
-                                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700"
-                            >
-                                Planes
-                            </a>
-
-                            <a
-                                href="#noticias"
-                                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700"
-                            >
-                                Noticias
-                            </a>
-
-                            <a
-                                href="#eventos"
-                                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700"
-                            >
-                                Eventos
-                            </a>
-
-                            <Link
-                                href="#"
-                                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700"
-                            >
-                                Gacetas
-                            </Link>
+                            <a href="#planes" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Planes</a>
+                            <a href="#noticias" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Noticias</a>
+                            <a href="#eventos" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Eventos</a>
+                            <Link href="#" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Gacetas</Link>
                         </nav>
 
                         <div className="flex items-center gap-3">
-
-                            <Link
-                                href={route('login')}
-                                className="hidden rounded-full bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 lg:block"
-                            >
-                                Ingresar
-                            </Link>
-
-                            <button
-                                onClick={() => setMobileMenu(!mobileMenu)}
-                                className="rounded-lg p-2 text-slate-700 lg:hidden"
-                            >
-                                {mobileMenu ? (
-                                    <X className="h-6 w-6" />
-                                ) : (
-                                    <Menu className="h-6 w-6" />
-                                )}
+                            <Link href={route('login')} className="hidden rounded-full bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 lg:block">Ingresar</Link>
+                            <button onClick={() => setMobileMenu(!mobileMenu)} className="rounded-lg p-2 text-slate-700 lg:hidden">
+                                {mobileMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                             </button>
                         </div>
                     </div>
@@ -417,132 +199,34 @@ export default function Welcome() {
                     {mobileMenu && (
                         <div className="border-t bg-white px-5 py-4 lg:hidden">
                             <div className="flex flex-col gap-1">
-                                <button
-                                    onClick={() => toggleMenu('mobileGob')}
-                                    className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium"
-                                >
-                                    Gobernación
-                                    <ChevronDown className="h-4 w-4" />
-                                </button>
-
+                                <button onClick={() => toggleMenu('mobileGob')} className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium">Gobernación <ChevronDown className="h-4 w-4" /></button>
                                 {menuAbierto === 'mobileGob' && (
                                     <div className="mb-2 rounded-lg bg-slate-50 px-4 py-2">
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Historia
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Mandatos
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Entes Adscritos
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Gabinetes
-                                        </Link>
+                                        <Link href="#" className="block py-2 text-sm">Historia</Link>
+                                        <Link href="#" className="block py-2 text-sm">Mandatos</Link>
+                                        <Link href="#" className="block py-2 text-sm">Entes Adscritos</Link>
+                                        <Link href="#" className="block py-2 text-sm">Gabinetes</Link>
                                     </div>
                                 )}
 
-                                <button
-                                    onClick={() => toggleMenu('mobileAcerca')}
-                                    className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium"
-                                >
-                                    Acerca de nosotros
-                                    <ChevronDown className="h-4 w-4" />
-                                </button>
-
+                                <button onClick={() => toggleMenu('mobileAcerca')} className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium">Acerca de nosotros <ChevronDown className="h-4 w-4" /></button>
                                 {menuAbierto === 'mobileAcerca' && (
                                     <div className="mb-2 rounded-lg bg-slate-50 px-4 py-2">
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Historia
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Efemérides
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Símbolos Patrimoniales
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Geografía
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Vegetación y Flora
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Cultura y Tradiciones
-                                        </Link>
-                                        <Link
-                                            href="#"
-                                            className="block py-2 text-sm"
-                                        >
-                                            Patrimonios Naturales
-                                        </Link>
+                                        <Link href="#" className="block py-2 text-sm">Historia</Link>
+                                        <Link href="#" className="block py-2 text-sm">Efemérides</Link>
+                                        <Link href="#" className="block py-2 text-sm">Símbolos Patrimoniales</Link>
+                                        <Link href="#" className="block py-2 text-sm">Geografía</Link>
+                                        <Link href="#" className="block py-2 text-sm">Vegetación y Flora</Link>
+                                        <Link href="#" className="block py-2 text-sm">Cultura y Tradiciones</Link>
+                                        <Link href="#" className="block py-2 text-sm">Patrimonios Naturales</Link>
                                     </div>
                                 )}
 
-                                <a
-                                    href="#noticias"
-                                    className="rounded-lg px-3 py-3 text-sm font-medium"
-                                >
-                                    Noticias
-                                </a>
-
-                                <a
-                                    href="#eventos"
-                                    className="rounded-lg px-3 py-3 text-sm font-medium"
-                                >
-                                    Eventos
-                                </a>
-
-                                <a
-                                    href="#planes"
-                                    className="rounded-lg px-3 py-3 text-sm font-medium"
-                                >
-                                    Planes
-                                </a>
-
-                                <Link
-                                    href="#"
-                                    className="rounded-lg px-3 py-3 text-sm font-medium"
-                                >
-                                    Gacetas
-                                </Link>
-
-                                <Link
-                                    href={route('login')}
-                                    className="mt-2 rounded-lg bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white"
-                                >
-                                    Ingresar al sistema
-                                </Link>
+                                <a href="#noticias" className="rounded-lg px-3 py-3 text-sm font-medium">Noticias</a>
+                                <a href="#eventos" className="rounded-lg px-3 py-3 text-sm font-medium">Eventos</a>
+                                <a href="#planes" className="rounded-lg px-3 py-3 text-sm font-medium">Planes</a>
+                                <Link href="#" className="rounded-lg px-3 py-3 text-sm font-medium">Gacetas</Link>
+                                <Link href={route('login')} className="mt-2 rounded-lg bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white">Ingresar al sistema</Link>
                             </div>
                         </div>
                     )}
@@ -550,16 +234,31 @@ export default function Welcome() {
 
                 {/* HERO */}
                 <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
-                    <img
-                        src="/images/anzoategui-nuestro.jpeg"
-                        alt="Anzoátegui es nuestro"
-                        className="absolute inset-0 h-full w-full object-cover"
-                    />
+                    <div className="absolute inset-0 overflow-hidden">
+                        {[
+                            '/images/anzoategui-nuestro.jpeg',
+                            '/images/basilica.png',
+                            '/images/pto-cruz.png',
+                        ].map((imagen, index) => (
+                            <img
+                                key={imagen}
+                                src={imagen}
+                                alt="Anzoátegui"
+                                className={`absolute inset-0 h-full w-full object-cover transition-all duration-1000 ease-in-out ${
+                                    index === heroSlide
+                                        ? 'translate-x-0 scale-100 opacity-100'
+                                        : index < heroSlide
+                                        ? '-translate-x-full scale-105 opacity-0'
+                                        : 'translate-x-full scale-105 opacity-0'
+                                }`}
+                            />
+                        ))}
+                    </div>
 
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-950/80 via-blue-900/45 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-950/80 to-transparent" />
 
                     <div className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-7xl items-center px-6 py-20 lg:px-8">
-                        <div className="max-w-2xl text-white">
+                        <div className="max-w-xl text-white">
                             <div className="mb-5 flex items-center gap-3">
                                 <span className="h-1 w-12 rounded-full bg-yellow-400" />
                                 <span className="text-sm font-bold uppercase tracking-[0.2em]">
@@ -567,32 +266,21 @@ export default function Welcome() {
                                 </span>
                             </div>
 
-                            <h1 className="text-6xl font-black tracking-tight sm:text-7xl lg:text-8xl">
-                                Anzoátegui
-                                <span className="block font-light italic text-yellow-400">
-                                    es nuestro
-                                </span>
+                            <h1 className="text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
+                                Trabajando por el desarrollo de nuestro estado
                             </h1>
 
-                            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/90 sm:text-xl">
-                                Trabajando por el desarrollo de nuestro estado,
-                                construyendo bienestar y oportunidades para
-                                todos.
+                            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/90 sm:text-xl">
+                                Construyendo bienestar, oportunidades y un mejor futuro para todos los anzoatiguenses.
                             </p>
 
                             <div className="mt-8 flex flex-wrap gap-4">
-                                <a
-                                    href="#planes"
-                                    className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-7 py-3.5 text-sm font-bold text-blue-950 transition hover:bg-yellow-300"
-                                >
+                                <a href="#planes" className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-7 py-3.5 text-sm font-bold text-blue-950 transition hover:bg-yellow-300">
                                     Conoce nuestra gestión
                                     <ArrowRight className="h-4 w-4" />
                                 </a>
 
-                                <a
-                                    href="#noticias"
-                                    className="inline-flex items-center gap-2 rounded-full border border-white/60 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10"
-                                >
+                                <a href="#noticias" className="inline-flex items-center gap-2 rounded-full border border-white/60 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10">
                                     Últimas noticias
                                 </a>
                             </div>
@@ -600,16 +288,22 @@ export default function Welcome() {
                     </div>
 
                     <div className="absolute bottom-7 left-1/2 flex -translate-x-1/2 gap-2">
-                        <span className="h-2.5 w-8 rounded-full bg-white" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/50" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/50" />
+                        {[0, 1, 2].map((index) => (
+                            <button
+                                key={index}
+                                onClick={() => setHeroSlide(index)}
+                                className={`h-2.5 rounded-full transition-all ${
+                                    heroSlide === index
+                                        ? 'w-8 bg-white'
+                                        : 'w-2.5 bg-white/50 hover:bg-white/80'
+                                }`}
+                            />
+                        ))}
                     </div>
 
                     <div className="absolute right-0 top-0 h-2 w-1/3 bg-yellow-400" />
                     <div className="absolute right-0 top-2 h-2 w-1/4 bg-green-600" />
                 </section>
-
-                <hr />
 
                 {/* PLANES */}
                 <section id="planes" className="relative overflow-hidden bg-slate-50 py-24">
@@ -630,16 +324,11 @@ export default function Welcome() {
                                 </h2>
 
                                 <p className="mt-3 max-w-2xl text-slate-600">
-                                    Impulsamos el desarrollo de nuestro estado
-                                    con obras y proyectos que mejoran la
-                                    calidad de vida de nuestra gente.
+                                    Impulsamos el desarrollo de nuestro estado con obras y proyectos que mejoran la calidad de vida de nuestra gente.
                                 </p>
                             </div>
 
-                            <Link
-                                href="#"
-                                className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900"
-                            >
+                            <Link href="#" className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900">
                                 Ver todos los planes
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
@@ -678,15 +367,10 @@ export default function Welcome() {
                                         </div>
 
                                         <p className="mt-5 text-sm leading-relaxed text-slate-600">
-                                            Mejora de la vialidad para
-                                            garantizar una mejor conectividad
-                                            y seguridad vial en la región.
+                                            Mejora de la vialidad para garantizar una mejor conectividad y seguridad vial en la región.
                                         </p>
 
-                                        <Link
-                                            href="#"
-                                            className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-700"
-                                        >
+                                        <Link href="#" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-700">
                                             Ver proyecto
                                             <ArrowRight className="h-4 w-4" />
                                         </Link>
@@ -733,8 +417,6 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                <hr />
-
                 {/* NOTICIAS */}
                 <section id="noticias" className="bg-white py-24">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -752,15 +434,11 @@ export default function Welcome() {
                                 </h2>
 
                                 <p className="mt-2 max-w-xl text-sm text-slate-500">
-                                    Mantente informado sobre las novedades más importantes
-                                    de nuestra gestión y del estado.
+                                    Mantente informado sobre las novedades más importantes de nuestra gestión y del estado.
                                 </p>
                             </div>
 
-                            <Link
-                                href="#"
-                                className="hidden items-center gap-2 text-sm font-bold text-blue-700 sm:flex"
-                            >
+                            <Link href="#" className="hidden items-center gap-2 text-sm font-bold text-blue-700 sm:flex">
                                 Ver todas las noticias
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
@@ -797,10 +475,7 @@ export default function Welcome() {
                                             {noticia.descripcion}
                                         </p>
 
-                                        <Link
-                                            href="#"
-                                            className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700"
-                                        >
+                                        <Link href="#" className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700">
                                             Leer más
                                             <ArrowRight className="h-4 w-4" />
                                         </Link>
@@ -810,8 +485,6 @@ export default function Welcome() {
                         </div>
                     </div>
                 </section>
-
-                <hr />
 
                 {/* EVENTOS */}
                 <section id="eventos" className="border-y border-slate-100 bg-slate-50 py-24">
@@ -830,15 +503,11 @@ export default function Welcome() {
                                 </h2>
 
                                 <p className="mt-2 max-w-xl text-sm text-slate-500">
-                                    Conoce las actividades, encuentros y jornadas que se
-                                    realizarán próximamente en nuestro estado.
+                                    Conoce las actividades, encuentros y jornadas que se realizarán próximamente en nuestro estado.
                                 </p>
                             </div>
 
-                            <Link
-                                href="#"
-                                className="inline-flex items-center gap-2 text-sm font-bold text-blue-700"
-                            >
+                            <Link href="#" className="inline-flex items-center gap-2 text-sm font-bold text-blue-700">
                                 Ver todos los eventos
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
@@ -877,9 +546,7 @@ export default function Welcome() {
                                         </h3>
 
                                         <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-500">
-                                            Disfruta y participa en esta actividad organizada
-                                            para nuestra comunidad y visitantes del estado
-                                            Anzoátegui.
+                                            Disfruta y participa en esta actividad organizada para nuestra comunidad y visitantes del estado Anzoátegui.
                                         </p>
 
                                         <div className="mt-5 space-y-2 border-t border-slate-100 pt-4">
@@ -894,10 +561,7 @@ export default function Welcome() {
                                             </p>
                                         </div>
 
-                                        <Link
-                                            href="#"
-                                            className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700"
-                                        >
+                                        <Link href="#" className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700">
                                             Ver detalles
                                             <ArrowRight className="h-4 w-4" />
                                         </Link>
@@ -918,24 +582,18 @@ export default function Welcome() {
                                     </p>
 
                                     <p className="mt-1 text-xs text-slate-500">
-                                        Consulta nuestra agenda para conocer actividades
-                                        realizadas anteriormente.
+                                        Consulta nuestra agenda para conocer actividades realizadas anteriormente.
                                     </p>
                                 </div>
                             </div>
 
-                            <Link
-                                href="#"
-                                className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-blue-700"
-                            >
+                            <Link href="#" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-blue-700">
                                 Ver eventos pasados
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
                         </div>
                     </div>
                 </section>
-
-                <hr />
 
                 {/* GOBERNADOR */}
                 <section className="px-6 py-16 lg:px-8">
@@ -960,9 +618,7 @@ export default function Welcome() {
                                     </div>
 
                                     <blockquote className="max-w-xl text-2xl font-bold italic leading-relaxed text-blue-950 md:text-3xl">
-                                        La palabra tiene poder, pero nuestra
-                                        gestión mucho más que palabras son
-                                        obras de bienestar colectivo.
+                                        La palabra tiene poder, pero nuestra gestión mucho más que palabras son obras de bienestar colectivo.
                                     </blockquote>
 
                                     <div className="mt-7">
@@ -992,8 +648,7 @@ export default function Welcome() {
                                 />
 
                                 <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
-                                    Portal institucional de la Gobernación del
-                                    Estado Anzoátegui.
+                                    Portal institucional de la Gobernación del Estado Anzoátegui.
                                 </p>
                             </div>
 
@@ -1005,8 +660,7 @@ export default function Welcome() {
                                 <div className="mt-4 space-y-3 text-sm text-slate-500">
                                     <p className="flex gap-2">
                                         <MapPin className="h-4 w-4 shrink-0 text-blue-700" />
-                                        Av. 5 de Julio, Barcelona 6001,
-                                        Anzoátegui
+                                        Av. 5 de Julio, Barcelona 6001, Anzoátegui
                                     </p>
 
                                     <p className="flex gap-2">
@@ -1022,48 +676,28 @@ export default function Welcome() {
                                 </h3>
 
                                 <p className="mt-2 text-sm text-slate-500">
-                                    Estamos disponibles para atender tus
-                                    consultas y solicitudes.
+                                    Estamos disponibles para atender tus consultas y solicitudes.
                                 </p>
 
-                                <Link
-                                    href="#"
-                                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-blue-700 px-6 py-2.5 text-sm font-bold text-blue-700 transition hover:bg-blue-700 hover:text-white"
-                                >
+                                <Link href="#" className="mt-5 inline-flex items-center gap-2 rounded-full border border-blue-700 px-6 py-2.5 text-sm font-bold text-blue-700 transition hover:bg-blue-700 hover:text-white">
                                     Contáctanos
                                     <ArrowRight className="h-4 w-4" />
                                 </Link>
 
                                 <div className="mt-6 flex gap-2 md:justify-end">
-                                    <a
-                                        href="#"
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-                                    >
+                                    <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white">
                                         <Facebook className="h-4 w-4" />
                                     </a>
 
-                                    <a
-                                        href="#"
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-                                    >
+                                    <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white">
                                         <Instagram className="h-4 w-4" />
-                                    </a>
-
-                                    <a
-                                        href="#"
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-                                    >
-                                        <Youtube className="h-4 w-4" />
                                     </a>
                                 </div>
                             </div>
                         </div>
 
                         <div className="mt-12 flex flex-col justify-between gap-3 border-t pt-6 text-xs text-slate-400 sm:flex-row">
-                            <p>
-                                © 2026 Gobernación del Estado Anzoátegui. Todos
-                                los derechos reservados.
-                            </p>
+                            <p>© 2026 Gobernación del Estado Anzoátegui. Todos los derechos reservados.</p>
 
                             <div className="flex items-center gap-1">
                                 <span className="h-1 w-7 rounded-full bg-blue-600" />
