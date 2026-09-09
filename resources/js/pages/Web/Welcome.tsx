@@ -1,5 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import Header from '@/components/Web/Header';
+import Footer from '@/components/Web/Footer';
 import {
     ArrowRight,
     CalendarDays,
@@ -105,132 +107,9 @@ export default function Welcome() {
         <>
             <Head title="Gobernación del Estado Anzoátegui" />
 
+            <Header />
+
             <div className="min-h-screen bg-white text-slate-900">
-                {/* HEADER */}
-                <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-                    <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-                        <Link href="/" className="shrink-0"><img src="/images/logo-anzoategui.png" alt="Gobernación del Estado Anzoátegui" className="h-16 w-auto" /></Link>
-
-                        {/* DESKTOP NAV */}
-                        <nav className="hidden items-center gap-1 lg:flex">
-                            {/* GOBERNACIÓN */}
-                            <div className="relative">
-                                <button onClick={() => toggleMenu('gobernacion')} className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${menuAbierto === 'gobernacion' ? 'text-blue-700' : 'text-slate-700 hover:text-blue-700'}`}>
-                                    Gobernación <ChevronDown className="h-4 w-4" />
-                                </button>
-                                {menuAbierto === 'gobernacion' && (
-                                    <div className="absolute left-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Historia</span><span className="mt-1 block text-xs text-slate-500">Conoce la historia de nuestra Gobernación</span></Link>
-                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Mandatos</span><span className="mt-1 block text-xs text-slate-500">Gobernantes del Estado Anzoátegui</span></Link>
-                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Entes Adscritos</span><span className="mt-1 block text-xs text-slate-500">Instituciones y organismos</span></Link>
-                                        <Link href="#" className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Gabinetes</span><span className="mt-1 block text-xs text-slate-500">Conoce nuestros gabinetes</span></Link>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* ACERCA DE NOSOTROS */}
-                            <div className="relative">
-                                <button onClick={() => toggleMenu('acerca')} className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${menuAbierto === 'acerca' ? 'text-blue-700' : 'text-slate-700 hover:text-blue-700'}`}>
-                                    Acerca de nosotros <ChevronDown className="h-4 w-4" />
-                                </button>
-                                {menuAbierto === 'acerca' && (
-                                    <div className="absolute left-1/2 top-full mt-2 w-[620px] -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-5 shadow-xl">
-                                        <div className="grid grid-cols-3 gap-6">
-                                            <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">El Estado</p>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Historia</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Geografía</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Efemérides</Link>
-                                            </div>
-                                            <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Identidad</p>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Símbolos Patrimoniales</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Bandera</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Escudo</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Himno</Link>
-                                            </div>
-                                            <div>
-                                                <p className="mb-3 border-b border-yellow-400 pb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Naturaleza</p>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Vegetación</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Flora</Link>
-                                                <Link href="#" className="block py-1.5 text-sm text-slate-600 hover:text-blue-700">Recursos Minerales</Link>
-                                                <Link href="#" className="block py-1.5 text-sm font-medium text-blue-700 hover:text-blue-900">Patrimonios Naturales →</Link>
-                                            </div>
-                                        </div>
-                                        <div className="mt-5 border-t pt-4">
-                                            <div className="grid grid-cols-2 gap-6">
-                                                <div>
-                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Cultura</p>
-                                                    <div className="flex flex-wrap gap-x-5 gap-y-1">
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Costumbres y Tradiciones</Link>
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Bailes</Link>
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Plazas</Link>
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Sitios Históricos</Link>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-800">Patrimonio Natural</p>
-                                                    <div className="flex flex-wrap gap-x-5 gap-y-1">
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Lagunas y Ríos</Link>
-                                                        <Link href="#" className="text-sm text-slate-600 hover:text-blue-700">Islas y Bahías</Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            <a href="#planes" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Planes</a>
-                            <a href="#noticias" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Noticias</a>
-                            <a href="#eventos" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Eventos</a>
-                            <Link href="#" className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Gacetas</Link>
-                        </nav>
-
-                        <div className="flex items-center gap-3">
-                            <Link href={route('login')} className="hidden rounded-full bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 lg:block">Ingresar</Link>
-                            <button onClick={() => setMobileMenu(!mobileMenu)} className="rounded-lg p-2 text-slate-700 lg:hidden">
-                                {mobileMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* MOBILE MENU */}
-                    {mobileMenu && (
-                        <div className="border-t bg-white px-5 py-4 lg:hidden">
-                            <div className="flex flex-col gap-1">
-                                <button onClick={() => toggleMenu('mobileGob')} className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium">Gobernación <ChevronDown className="h-4 w-4" /></button>
-                                {menuAbierto === 'mobileGob' && (
-                                    <div className="mb-2 rounded-lg bg-slate-50 px-4 py-2">
-                                        <Link href="#" className="block py-2 text-sm">Historia</Link>
-                                        <Link href="#" className="block py-2 text-sm">Mandatos</Link>
-                                        <Link href="#" className="block py-2 text-sm">Entes Adscritos</Link>
-                                        <Link href="#" className="block py-2 text-sm">Gabinetes</Link>
-                                    </div>
-                                )}
-
-                                <button onClick={() => toggleMenu('mobileAcerca')} className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium">Acerca de nosotros <ChevronDown className="h-4 w-4" /></button>
-                                {menuAbierto === 'mobileAcerca' && (
-                                    <div className="mb-2 rounded-lg bg-slate-50 px-4 py-2">
-                                        <Link href="#" className="block py-2 text-sm">Historia</Link>
-                                        <Link href="#" className="block py-2 text-sm">Efemérides</Link>
-                                        <Link href="#" className="block py-2 text-sm">Símbolos Patrimoniales</Link>
-                                        <Link href="#" className="block py-2 text-sm">Geografía</Link>
-                                        <Link href="#" className="block py-2 text-sm">Vegetación y Flora</Link>
-                                        <Link href="#" className="block py-2 text-sm">Cultura y Tradiciones</Link>
-                                        <Link href="#" className="block py-2 text-sm">Patrimonios Naturales</Link>
-                                    </div>
-                                )}
-
-                                <a href="#noticias" className="rounded-lg px-3 py-3 text-sm font-medium">Noticias</a>
-                                <a href="#eventos" className="rounded-lg px-3 py-3 text-sm font-medium">Eventos</a>
-                                <a href="#planes" className="rounded-lg px-3 py-3 text-sm font-medium">Planes</a>
-                                <Link href="#" className="rounded-lg px-3 py-3 text-sm font-medium">Gacetas</Link>
-                                <Link href={route('login')} className="mt-2 rounded-lg bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white">Ingresar al sistema</Link>
-                            </div>
-                        </div>
-                    )}
-                </header>
 
                 {/* HERO */}
                 <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
@@ -328,7 +207,7 @@ export default function Welcome() {
                                 </p>
                             </div>
 
-                            <Link href="#" className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900">
+                            <Link href="planes" className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900">
                                 Ver todos los planes
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
@@ -636,77 +515,7 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* FOOTER */}
-                <footer className="border-t border-slate-200 bg-white">
-                    <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
-                        <div className="grid gap-10 md:grid-cols-3">
-                            <div>
-                                <img
-                                    src="/images/logo-anzoategui.png"
-                                    alt="Gobernación del Estado Anzoátegui"
-                                    className="h-20 w-auto"
-                                />
-
-                                <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
-                                    Portal institucional de la Gobernación del Estado Anzoátegui.
-                                </p>
-                            </div>
-
-                            <div>
-                                <h3 className="font-bold text-blue-950">
-                                    Información
-                                </h3>
-
-                                <div className="mt-4 space-y-3 text-sm text-slate-500">
-                                    <p className="flex gap-2">
-                                        <MapPin className="h-4 w-4 shrink-0 text-blue-700" />
-                                        Av. 5 de Julio, Barcelona 6001, Anzoátegui
-                                    </p>
-
-                                    <p className="flex gap-2">
-                                        <Clock3 className="h-4 w-4 shrink-0 text-blue-700" />
-                                        Lunes – Viernes, 8:00 am – 3:00 pm
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="md:text-right">
-                                <h3 className="font-bold text-blue-950">
-                                    ¿Necesitas contactarnos?
-                                </h3>
-
-                                <p className="mt-2 text-sm text-slate-500">
-                                    Estamos disponibles para atender tus consultas y solicitudes.
-                                </p>
-
-                                <Link href="#" className="mt-5 inline-flex items-center gap-2 rounded-full border border-blue-700 px-6 py-2.5 text-sm font-bold text-blue-700 transition hover:bg-blue-700 hover:text-white">
-                                    Contáctanos
-                                    <ArrowRight className="h-4 w-4" />
-                                </Link>
-
-                                <div className="mt-6 flex gap-2 md:justify-end">
-                                    <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white">
-                                        <Facebook className="h-4 w-4" />
-                                    </a>
-
-                                    <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white">
-                                        <Instagram className="h-4 w-4" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-12 flex flex-col justify-between gap-3 border-t pt-6 text-xs text-slate-400 sm:flex-row">
-                            <p>© 2026 Gobernación del Estado Anzoátegui. Todos los derechos reservados.</p>
-
-                            <div className="flex items-center gap-1">
-                                <span className="h-1 w-7 rounded-full bg-blue-600" />
-                                <span className="h-1 w-7 rounded-full bg-yellow-400" />
-                                <span className="h-1 w-7 rounded-full bg-green-600" />
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </>
     );

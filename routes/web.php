@@ -19,7 +19,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\EstadoPlanController;
 
 Route::get('/', [WebController::class, 'index'])->name('home');
-// Route::get('/servicios', [WebController::class, 'servicios'])->name('servicios');
+Route::get('/planes', [WebController::class, 'planes'])->name('web.planes');
 
 /*
 |--------------------------------------------------------------------------
