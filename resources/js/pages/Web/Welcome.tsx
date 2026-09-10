@@ -30,31 +30,17 @@ interface Noticia {
     fecha: string;
 }
 
-const eventos = [
-    {
-        dia: '18',
-        mes: 'SEP',
-        titulo: 'El Puerto Fest',
-        hora: '09:00 AM',
-        lugar: 'Plaza Bolívar, Barcelona',
-    },
-    {
-        dia: '22',
-        mes: 'SEP',
-        titulo: 'Expoferia Agroproductiva',
-        hora: '10:00 AM',
-        lugar: 'Parque Andrés Eloy Blanco, Lechería',
-    },
-    {
-        dia: '27',
-        mes: 'SEP',
-        titulo: 'Festival Playero',
-        hora: '08:30 AM',
-        lugar: 'Municipio Simón Rodríguez',
-    },
-];
+interface Evento {
+    id: number;
+    titulo: string;
+    descripcion_corta: string;
+    fecha_inicio: string;
+    fecha_fin: string | null;
+    lugar: string | null;
+    imagen_portada: string | null;
+}
 
-export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias: Noticia[] }) {
+export default function Welcome({planes, noticias, eventos}: {planes: Plan[]; noticias: Noticia[]; eventos: Evento[]}) {
     const [menuAbierto, setMenuAbierto] = useState<string | null>(null);
     const [planSeleccionado, setPlanSeleccionado] = useState<Plan | null>(null);
     const [imagenActual, setImagenActual] = useState(0);
@@ -67,24 +53,10 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
         'Finalizado': 'bg-green-100 text-green-700',
     };
 
-    const formatDate = (date: string | null) =>
-        date
-            ? new Date(`${date}T00:00:00`).toLocaleDateString('es-VE', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-            })
-            : 'No definida';
+    const formatDate = (date: string | null) => date ? new Date(`${date}T00:00:00`).toLocaleDateString('es-VE', { day: '2-digit', month: 'long', year: 'numeric' }) : 'No definida';
 
-    const abrirPlan = (plan: Plan) => {
-        setPlanSeleccionado(plan);
-        setImagenActual(0);
-    };
-
-    const cerrarPlan = () => {
-        setPlanSeleccionado(null);
-        setImagenActual(0);
-    };
+    const abrirPlan = (plan: Plan) => {setPlanSeleccionado(plan); setImagenActual(0)};
+    const cerrarPlan = () => {setPlanSeleccionado(null); setImagenActual(0)};
 
     const imagenes = planSeleccionado
         ? [
@@ -105,11 +77,11 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
         setImagenActual((actual) => (actual - 1 + imagenes.length) % imagenes.length);
     };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setHeroSlide((current) => (current + 1) % 3);
-        }, 5000);
+    const formatearFecha = (fecha: string) => new Intl.DateTimeFormat('es-VE', {day: 'numeric', month: 'short', year: 'numeric'}).format(new Date(fecha));
+    const formatearHora = (fecha: string) => new Intl.DateTimeFormat('es-VE', {hour: 'numeric', minute: '2-digit'}).format(new Date(fecha));
 
+    useEffect(() => {
+        const interval = setInterval(() => {setHeroSlide((current) => (current + 1) % 3);}, 5000);
         return () => clearInterval(interval);
     }, []);
 
@@ -131,9 +103,7 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
         };
     }, [planSeleccionado, imagenes.length]);
 
-    const toggleMenu = (menu: string) => {
-        setMenuAbierto(menuAbierto === menu ? null : menu);
-    };
+    const toggleMenu = (menu: string) => { setMenuAbierto(menuAbierto === menu ? null : menu); };
 
     return (
         <>
@@ -203,11 +173,7 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
                                 <button
                                     key={index}
                                     onClick={() => setHeroSlide(index)}
-                                    className={`h-2.5 rounded-full transition-all ${
-                                        heroSlide === index
-                                            ? 'w-8 bg-white'
-                                            : 'w-2.5 bg-white/50 hover:bg-white/80'
-                                    }`}
+                                    className={`h-2.5 rounded-full transition-all ${heroSlide === index ? 'w-8 bg-white' : 'w-2.5 bg-white/50 hover:bg-white/80'}`}
                                 />
                             ))}
                         </div>
@@ -557,78 +523,92 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
                                             Agenda
                                         </span>
                                     </div>
-
-                                    <h2 className="text-4xl font-bold text-blue-950">
-                                        Próximos eventos
-                                    </h2>
-
+                                    <h2 className="text-4xl font-bold text-blue-950">Próximos eventos</h2>
                                     <p className="mt-2 max-w-xl text-sm text-slate-500">
                                         Conoce las actividades, encuentros y jornadas que se realizarán próximamente en nuestro estado.
                                     </p>
                                 </div>
 
-                                <Link href="/eventos" className="inline-flex items-center gap-2 text-sm font-bold text-blue-700">
+                                <Link
+                                    href={route('web.eventos')}
+                                    className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 transition hover:text-blue-900"
+                                >
                                     Ver todos los eventos
                                     <ArrowRight className="h-4 w-4" />
                                 </Link>
                             </div>
 
-                            <div className="grid gap-6 md:grid-cols-3">
-                                {eventos.map((evento, index) => (
-                                    <article
-                                        key={evento.titulo}
-                                        className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-                                    >
-                                        <div className="relative h-56 overflow-hidden">
-                                            <img
-                                                src={
-                                                    index === 0
-                                                        ? '/images/evento-1.jpg'
-                                                        : index === 1
-                                                        ? '/images/evento-2.jpeg'
-                                                        : '/images/evento-3.jpeg'
-                                                }
-                                                alt={evento.titulo}
-                                                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                            />
+                            {eventos.length > 0 ? (
+                                <div className="grid gap-6 md:grid-cols-3">
+                                    {eventos.map((evento) => (
+                                        <article
+                                            key={evento.id}
+                                            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                                        >
+                                            <div className="relative h-56 overflow-hidden bg-slate-200">
+                                                {evento.imagen_portada ? (
+                                                    <img
+                                                        src={evento.imagen_portada}
+                                                        alt={evento.titulo}
+                                                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-full items-center justify-center text-slate-400">
+                                                        <CalendarDays className="h-12 w-12" />
+                                                    </div>
+                                                )}
 
-                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5">
-                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold text-blue-800">
-                                                    <CalendarDays className="h-3 w-3" />
-                                                    {evento.dia} {evento.mes}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="p-5">
-                                            <h3 className="text-lg font-bold text-blue-950">
-                                                {evento.titulo}
-                                            </h3>
-
-                                            <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-500">
-                                                Disfruta y participa en esta actividad organizada para nuestra comunidad y visitantes del estado Anzoátegui.
-                                            </p>
-
-                                            <div className="mt-5 space-y-2 border-t border-slate-100 pt-4">
-                                                <p className="flex items-center gap-2 text-xs text-slate-500">
-                                                    <Clock3 className="h-4 w-4 text-blue-600" />
-                                                    {evento.hora}
-                                                </p>
-
-                                                <p className="flex items-center gap-2 text-xs text-slate-500">
-                                                    <MapPin className="h-4 w-4 text-green-600" />
-                                                    {evento.lugar}
-                                                </p>
+                                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5">
+                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold text-blue-800">
+                                                        <CalendarDays className="h-3 w-3" />
+                                                        {formatearFecha(evento.fecha_inicio)}
+                                                    </span>
+                                                </div>
                                             </div>
 
-                                            <Link href="#" className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700">
-                                                Ver detalles
-                                                <ArrowRight className="h-4 w-4" />
-                                            </Link>
-                                        </div>
-                                    </article>
-                                ))}
-                            </div>
+                                            <div className="p-5">
+                                                <h3 className="text-lg font-bold text-blue-950">
+                                                    {evento.titulo}
+                                                </h3>
+
+                                                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-500">
+                                                    {evento.descripcion_corta}
+                                                </p>
+
+                                                <div className="mt-5 space-y-2 border-t border-slate-100 pt-4">
+                                                    <p className="flex items-center gap-2 text-xs text-slate-500">
+                                                        <Clock3 className="h-4 w-4 text-blue-600" />
+                                                        {formatearHora(evento.fecha_inicio)}
+                                                        {evento.fecha_fin && ` - ${formatearHora(evento.fecha_fin)}`}
+                                                    </p>
+
+                                                    {evento.lugar && (
+                                                        <p className="flex items-center gap-2 text-xs text-slate-500">
+                                                            <MapPin className="h-4 w-4 text-green-600" />
+                                                            <span className="truncate">{evento.lugar}</span>
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <Link
+                                                    href={route('web.evento', evento.id)}
+                                                    className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-blue-700 transition hover:gap-2 hover:text-blue-900"
+                                                >
+                                                    Ver detalles
+                                                    <ArrowRight className="h-4 w-4" />
+                                                </Link>
+                                            </div>
+                                        </article>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-12 text-center">
+                                    <CalendarDays className="mx-auto mb-3 h-10 w-10 text-slate-300" />
+                                    <p className="text-sm font-medium text-slate-600">
+                                        Actualmente no hay próximos eventos publicados.
+                                    </p>
+                                </div>
+                            )}
 
                             <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-blue-100 bg-blue-50 p-5 sm:flex-row">
                                 <div className="flex items-center gap-4">
@@ -640,14 +620,16 @@ export default function Welcome({ planes, noticias }: { planes: Plan[]; noticias
                                         <p className="text-sm font-bold text-blue-950">
                                             ¿Buscas eventos que ya pasaron?
                                         </p>
-
                                         <p className="mt-1 text-xs text-slate-500">
                                             Consulta nuestra agenda para conocer actividades realizadas anteriormente.
                                         </p>
                                     </div>
                                 </div>
 
-                                <Link href="#" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-blue-700">
+                                <Link
+                                    href={route('web.eventos')}
+                                    className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-blue-700 transition hover:text-blue-900"
+                                >
                                     Ver eventos pasados
                                     <ArrowRight className="h-4 w-4" />
                                 </Link>

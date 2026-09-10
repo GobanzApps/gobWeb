@@ -2,16 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Can } from '@/components/can';
-import {
-    ArrowRight,
-    CalendarDays,
-    ClipboardList,
-    FileText,
-    Globe,
-    GlobeLock,
-    MapPin,
-    Newspaper,
-} from 'lucide-react';
+import { ArrowRight, CalendarDays, ClipboardList, FileText, Globe, GlobeLock, MapPin, Newspaper, Clock3, CircleCheck, CircleDot} from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -47,6 +38,7 @@ interface Evento {
     fecha_inicio: string;
     fecha_fin: string | null;
     lugar: string | null;
+    publicado: boolean;
 }
 
 interface Plan {
@@ -70,28 +62,11 @@ interface Props {
     planes: Plan[];
 }
 
-const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('es-VE', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-    });
+const formatDate = (date: string) => new Date(date).toLocaleDateString('es-VE', {day: '2-digit', month: 'short', year: 'numeric'});
+const formatTime = (date: string) => new Intl.DateTimeFormat('es-VE', {hour: 'numeric', minute: '2-digit' }).format(new Date(date));
+const formatDateTime = (date: string) => new Intl.DateTimeFormat('es-VE', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(date));
 
-const formatDateTime = (date: string) =>
-    new Date(date).toLocaleString('es-VE', {
-        day: '2-digit',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-    });
-
-export default function Dashboard({
-    estadisticas,
-    noticiasRecientes,
-    gacetasRecientes,
-    proximosEventos,
-    planes,
-}: Props) {
+export default function Dashboard({ estadisticas, noticiasRecientes, gacetasRecientes, proximosEventos, planes }: Props) {
     const tarjetas = [
         {
             titulo: 'Noticias',
@@ -367,75 +342,108 @@ export default function Dashboard({
                         </div>
                     </Can>
 
-                    {/* Eventos */}
-                    <Can permission="eventos.view">
-                        <div className="overflow-hidden rounded-2xl border bg-card">
-                            <div className="flex items-center justify-between border-b p-5">
-                                <div className="flex items-center gap-3">
-                                    <div className="rounded-xl bg-emerald-100 p-2.5 dark:bg-emerald-950/50">
-                                        <CalendarDays className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                                    </div>
-                                    <div>
-                                        <h2 className="font-semibold">
-                                            Próximos eventos
-                                        </h2>
-                                        <p className="text-xs text-muted-foreground">
-                                            Eventos próximos publicados
-                                        </p>
-                                    </div>
+{/* Eventos */}
+<Can permission="eventos.view">
+    <div className="overflow-hidden rounded-2xl border bg-card">
+        <div className="flex items-center justify-between border-b p-5">
+            <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-emerald-100 p-2.5 dark:bg-emerald-950/50">
+                    <CalendarDays className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <div>
+                    <h2 className="font-semibold">Agenda de eventos</h2>
+                    <p className="text-xs text-muted-foreground">Eventos próximos, en curso y recientes</p>
+                </div>
+            </div>
+            <Link href={route('eventos.index')} className="text-xs font-medium text-emerald-600 hover:underline dark:text-emerald-400">
+                Ver todos
+            </Link>
+        </div>
+
+        <div className="divide-y">
+            {proximosEventos.length > 0 ? (
+                proximosEventos.map((evento) => {
+                    const ahora = new Date();
+                    const inicio = new Date(evento.fecha_inicio);
+                    const fin = evento.fecha_fin ? new Date(evento.fecha_fin) : inicio;
+                    const enCurso = inicio <= ahora && fin >= ahora;
+                    const finalizado = fin < ahora;
+
+                    return (
+                        <Link
+                            key={evento.id}
+                            href={route('eventos.show', evento.id)}
+                            className="group flex items-center justify-between gap-4 p-4 transition-colors hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20"
+                        >
+                            <div className="flex min-w-0 flex-1 gap-4">
+                                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
+                                    enCurso
+                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                                        : finalizado
+                                            ? 'bg-muted text-muted-foreground'
+                                            : 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400'
+                                }`}>
+                                    {enCurso ? <CircleDot className="h-5 w-5" /> : finalizado ? <CircleCheck className="h-5 w-5" /> : <CalendarDays className="h-5 w-5" />}
                                 </div>
 
-                                <Link
-                                    href={route('eventos.index')}
-                                    className="text-xs font-medium text-emerald-600 hover:underline dark:text-emerald-400"
-                                >
-                                    Ver todos
-                                </Link>
+                                <div className="min-w-0">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <p className="truncate text-sm font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                                            {evento.titulo}
+                                        </p>
+
+                                        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                                            enCurso
+                                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                                                : finalizado
+                                                    ? 'bg-muted text-muted-foreground'
+                                                    : 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400'
+                                        }`}>
+                                            {enCurso ? 'En curso' : finalizado ? 'Finalizado' : 'Próximo'}
+                                        </span>
+                                    </div>
+
+                                    <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                                        <span className="flex items-center gap-1">
+                                            <CalendarDays className="h-3 w-3" />
+                                            {formatDate(evento.fecha_inicio)}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            <Clock3 className="h-3 w-3" />
+                                            {formatTime(evento.fecha_inicio)}
+                                            {evento.fecha_fin && ` - ${formatTime(evento.fecha_fin)}`}
+                                        </span>
+                                    </div>
+
+                                    {evento.lugar && (
+                                        <p className="mt-1 flex items-center gap-1 truncate text-xs text-muted-foreground">
+                                            <MapPin className="h-3 w-3 shrink-0" />
+                                            {evento.lugar}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
-                            <div className="divide-y">
-                                {proximosEventos.length > 0 ? (
-                                    proximosEventos.map((evento) => (
-                                        <Link
-                                            key={evento.id}
-                                            href={route(
-                                                'eventos.show',
-                                                evento.id,
-                                            )}
-                                            className="group flex gap-4 p-4 transition-colors hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20"
-                                        >
-                                            <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                                <CalendarDays className="h-4 w-4" />
-                                            </div>
-
-                                            <div className="min-w-0">
-                                                <p className="truncate text-sm font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                                                    {evento.titulo}
-                                                </p>
-
-                                                <p className="mt-1 text-xs text-muted-foreground">
-                                                    {formatDateTime(
-                                                        evento.fecha_inicio,
-                                                    )}
-                                                </p>
-
-                                                {evento.lugar && (
-                                                    <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                                                        <MapPin className="h-3 w-3" />
-                                                        {evento.lugar}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </Link>
-                                    ))
-                                ) : (
-                                    <p className="p-5 text-sm text-muted-foreground">
-                                        No hay próximos eventos.
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </Can>
+                            {evento.publicado ? (
+                                <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                    <Globe className="h-3 w-3" />
+                                    Publicado
+                                </span>
+                            ) : (
+                                <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                                    <GlobeLock className="h-3 w-3" />
+                                    No publicado
+                                </span>
+                            )}
+                        </Link>
+                    );
+                })
+            ) : (
+                <p className="p-5 text-sm text-muted-foreground">No hay eventos registrados.</p>
+            )}
+        </div>
+    </div>
+</Can>
 
                     {/* Planes */}
                     <Can permission="planes.view">

@@ -50,9 +50,29 @@ class WebController extends Controller
                 'fecha' => $noticia->created_at?->locale('es')->translatedFormat('d \d\e F \d\e Y'),
             ]);
 
+        $eventos = Evento::where('publicado', true)
+            ->where(function ($query) {
+                $query->whereNull('fecha_fin')
+                    ->where('fecha_inicio', '>=', now())
+                    ->orWhere('fecha_fin', '>=', now());
+            })
+            ->orderBy('fecha_inicio')
+            ->take(3)
+            ->get()
+            ->map(fn ($evento) => [
+                'id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'descripcion_corta' => $evento->descripcion_corta,
+                'fecha_inicio' => $evento->fecha_inicio?->format('Y-m-d\TH:i:s'),
+                'fecha_fin' => $evento->fecha_fin?->format('Y-m-d\TH:i:s'),
+                'lugar' => $evento->lugar,
+                'imagen_portada' => $evento->imagen_portada ? Storage::url($evento->imagen_portada) : null,
+            ]);
+
         return Inertia::render('Web/Welcome', [
             'planes' => $planes,
             'noticias' => $noticias,
+            'eventos' => $eventos,
         ]);
     }
 
@@ -155,115 +175,63 @@ class WebController extends Controller
 
     public function eventos()
     {
-        $eventos = [
-            [
-                'id' => 1,
-                'titulo' => 'El Puerto Fest',
-                'descripcion' => 'Una jornada cultural y recreativa para toda la comunidad del estado Anzoátegui. El evento reunirá actividades culturales, deportivas y recreativas para el disfrute de las familias, además de espacios destinados a promover el talento y la identidad de nuestro estado.',
-                'fecha_inicio' => '2026-09-18T09:00:00',
-                'fecha_fin' => '2026-09-18T17:00:00',
-                'lugar' => 'Plaza Bolívar, Barcelona',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
-            ],
-            [
-                'id' => 2,
-                'titulo' => 'Expoferia Agroproductiva',
-                'descripcion' => 'Encuentro para impulsar la producción y el desarrollo agroproductivo del estado.',
-                'fecha_inicio' => '2026-09-22T10:00:00',
-                'fecha_fin' => '2026-09-22T16:00:00',
-                'lugar' => 'Parque Andrés Eloy Blanco, Lechería',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 3,
-                'titulo' => 'Festival Playero',
-                'descripcion' => 'Actividad deportiva, cultural y recreativa para disfrutar de nuestras costas.',
-                'fecha_inicio' => '2026-09-27T08:30:00',
-                'fecha_fin' => '2026-09-27T15:00:00',
-                'lugar' => 'Municipio Simón Rodríguez',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 4,
-                'titulo' => 'Jornada de Atención Ciudadana',
-                'descripcion' => 'Jornada de atención y orientación dirigida a los ciudadanos del estado.',
-                'fecha_inicio' => '2026-08-15T09:00:00',
-                'fecha_fin' => '2026-08-15T14:00:00',
-                'lugar' => 'Casa de Gobierno, Barcelona',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 5,
-                'titulo' => 'Encuentro Cultural Anzoátegui',
-                'descripcion' => 'Espacio dedicado a la cultura, tradición y expresión artística de nuestro estado.',
-                'fecha_inicio' => '2026-08-05T10:00:00',
-                'fecha_fin' => '2026-08-05T18:00:00',
-                'lugar' => 'Centro Cultural Anzoátegui',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80',
-            ],
-        ];
+        $eventos = Evento::with(['imagenes' => fn ($query) => $query->orderBy('orden')])
+            ->where('publicado', true)
+            ->orderBy('fecha_inicio')
+            ->get()
+            ->map(fn ($evento) => [
+                'id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'descripcion_corta' => $evento->descripcion_corta,
+                'descripcion' => $evento->descripcion,
+                'fecha_inicio' => $evento->fecha_inicio?->format('Y-m-d\TH:i:s'),
+                'fecha_fin' => $evento->fecha_fin?->format('Y-m-d\TH:i:s'),
+                'lugar' => $evento->lugar,
+                'imagen_portada' => $evento->imagen_portada ? Storage::url($evento->imagen_portada) : null,
+                'imagenes' => $evento->imagenes
+                    ->filter(fn ($imagen) => $imagen->archivo)
+                    ->map(fn ($imagen) => [
+                        'url' => Storage::url($imagen->archivo),
+                        'alt' => $imagen->alt_text ?: $evento->titulo,
+                    ])
+                    ->values()
+                    ->all(),
+            ]);
 
         return Inertia::render('Web/Eventos/Index', [
             'eventos' => $eventos,
         ]);
     }
 
-    public function evento(int $evento)
+    /*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    public function evento(Evento $evento)
     {
-        $eventos = [
-            [
-                'id' => 1,
-                'titulo' => 'El Puerto Fest',
-                'descripcion' => 'Una jornada cultural y recreativa para toda la comunidad del estado Anzoátegui. El evento reunirá actividades culturales, deportivas y recreativas para el disfrute de las familias, además de espacios destinados a promover el talento y la identidad de nuestro estado.',
-                'fecha_inicio' => '2026-09-18T09:00:00',
-                'fecha_fin' => '2026-09-18T17:00:00',
-                'lugar' => 'Plaza Bolívar, Barcelona',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=85',
-            ],
-            [
-                'id' => 2,
-                'titulo' => 'Expoferia Agroproductiva',
-                'descripcion' => 'Encuentro para impulsar la producción y el desarrollo agroproductivo del estado.',
-                'fecha_inicio' => '2026-09-22T10:00:00',
-                'fecha_fin' => '2026-09-22T16:00:00',
-                'lugar' => 'Parque Andrés Eloy Blanco, Lechería',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 3,
-                'titulo' => 'Festival Playero',
-                'descripcion' => 'Actividad deportiva, cultural y recreativa para disfrutar de nuestras costas.',
-                'fecha_inicio' => '2026-09-27T08:30:00',
-                'fecha_fin' => '2026-09-27T15:00:00',
-                'lugar' => 'Municipio Simón Rodríguez',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 4,
-                'titulo' => 'Jornada de Atención Ciudadana',
-                'descripcion' => 'Jornada de atención y orientación dirigida a los ciudadanos del estado.',
-                'fecha_inicio' => '2026-08-15T09:00:00',
-                'fecha_fin' => '2026-08-15T14:00:00',
-                'lugar' => 'Casa de Gobierno, Barcelona',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1000&q=80',
-            ],
-            [
-                'id' => 5,
-                'titulo' => 'Encuentro Cultural Anzoátegui',
-                'descripcion' => 'Espacio dedicado a la cultura, tradición y expresión artística de nuestro estado.',
-                'fecha_inicio' => '2026-08-05T10:00:00',
-                'fecha_fin' => '2026-08-05T18:00:00',
-                'lugar' => 'Centro Cultural Anzoátegui',
-                'imagen_portada' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80',
-            ],
-        ];
+        abort_unless($evento->publicado, 404);
 
-        $evento = collect($eventos)->firstWhere('id', $evento);
-
-        abort_unless($evento, 404);
+        $evento->load([
+            'imagenes' => fn ($query) => $query->orderBy('orden'),
+        ]);
 
         return Inertia::render('Web/Eventos/Show', [
-            'evento' => $evento,
+            'evento' => [
+                'id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'descripcion_corta' => $evento->descripcion_corta,
+                'descripcion' => $evento->descripcion,
+                'fecha_inicio' => $evento->fecha_inicio?->format('Y-m-d\TH:i:s'),
+                'fecha_fin' => $evento->fecha_fin?->format('Y-m-d\TH:i:s'),
+                'lugar' => $evento->lugar,
+                'imagen_portada' => $evento->imagen_portada ? Storage::url($evento->imagen_portada) : null,
+                'imagenes' => $evento->imagenes
+                    ->filter(fn ($imagen) => $imagen->archivo)
+                    ->map(fn ($imagen) => [
+                        'url' => Storage::url($imagen->archivo),
+                        'alt' => $imagen->alt_text ?: $evento->titulo,
+                    ])
+                    ->values()
+                    ->all(),
+            ],
         ]);
     }
 }

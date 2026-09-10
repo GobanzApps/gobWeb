@@ -41,7 +41,7 @@ class EventoController extends Controller
             ->when($request->has('publicado') && $request->publicado !== '', function ($query) use ($request) {
                 $query->where('publicado', $request->boolean('publicado'));
             })
-            ->orderBy('fecha_inicio', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
 
@@ -66,14 +66,16 @@ class EventoController extends Controller
     public function store(StoreEventoRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $evento = Evento::create([
-                ...$request->validated(),
-                'created_by' => Auth::id(),
-            ]);
+            $datos = $request->validated();
+            unset($datos['imagen_portada'], $datos['imagenes']);
 
-            $imagenes = $request->file('imagenes', []);
+            if ($request->hasFile('imagen_portada')) {
+                $datos['imagen_portada'] = $request->file('imagen_portada')->store('eventos/portadas', 'public');
+            }
 
-            foreach ($imagenes as $index => $imagen) {
+            $evento = Evento::create([...$datos, 'created_by' => Auth::id()]);
+
+            foreach ($request->file('imagenes', []) as $index => $imagen) {
                 $archivo = $imagen->store('eventos', 'public');
 
                 $evento->imagenes()->create([
@@ -128,10 +130,18 @@ class EventoController extends Controller
     public function update(UpdateEventoRequest $request, Evento $evento): RedirectResponse
     {
         DB::transaction(function () use ($request, $evento) {
-            $evento->update([
-                ...$request->validated(),
-                'updated_by' => Auth::id(),
-            ]);
+            $datos = $request->validated();
+            unset($datos['imagen_portada'], $datos['imagenes'], $datos['imagenes_eliminar']);
+
+            if ($request->hasFile('imagen_portada')) {
+                if ($evento->imagen_portada) {
+                    Storage::disk('public')->delete($evento->imagen_portada);
+                }
+
+                $datos['imagen_portada'] = $request->file('imagen_portada')->store('eventos/portadas', 'public');
+            }
+
+            $evento->update([...$datos, 'updated_by' => Auth::id()]);
 
             $imagenesEliminar = $request->input('imagenes_eliminar', []);
 

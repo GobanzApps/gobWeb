@@ -31,11 +31,17 @@ class DashboardController extends Controller
             ->get(['id', 'titulo', 'publicado', 'created_at']);
 
         $proximosEventos = Evento::query()
-            ->where('publicado', true)
-            ->where('fecha_inicio', '>=', now())
-            ->orderBy('fecha_inicio')
+            ->orderBy('id', 'desc')
             ->take(5)
-            ->get(['id', 'titulo', 'fecha_inicio', 'fecha_fin', 'lugar']);
+            ->get()
+            ->map(fn ($evento) => [
+                'id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'fecha_inicio' => $evento->fecha_inicio?->format('Y-m-d\TH:i:s'),
+                'fecha_fin' => $evento->fecha_fin?->format('Y-m-d\TH:i:s'),
+                'lugar' => $evento->lugar,
+                'publicado' => $evento->publicado,
+            ]);
 
         $planes = Plan::query()
             ->with('estado')

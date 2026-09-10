@@ -1,28 +1,28 @@
 import { Head, Link } from '@inertiajs/react';
 import WebLayout from '@/layouts/WebLayout';
-import { ArrowLeft, CalendarDays, CheckCircle2, Clock3, MapPin, Share2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, Clock3, MapPin, Share2, X } from 'lucide-react';
+
+interface Imagen {
+    url: string;
+    alt: string;
+}
 
 interface Evento {
     id: number;
     titulo: string;
+    descripcion_corta: string;
     descripcion: string;
     fecha_inicio: string;
     fecha_fin: string | null;
     lugar: string | null;
     imagen_portada: string | null;
+    imagenes: Imagen[];
 }
 
-const evento: Evento = {
-    id: 1,
-    titulo: 'El Puerto Fest',
-    descripcion:
-        'Una jornada cultural y recreativa para toda la comunidad del estado Anzoátegui. El evento reunirá actividades culturales, deportivas y recreativas para el disfrute de las familias, además de espacios destinados a promover el talento y la identidad de nuestro estado.',
-    fecha_inicio: '2026-09-18T09:00:00',
-    fecha_fin: '2026-09-18T17:00:00',
-    lugar: 'Plaza Bolívar, Barcelona',
-    imagen_portada:
-        'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=85',
-};
+interface Props {
+    evento: Evento;
+}
 
 const formatearFecha = (fecha: string) =>
     new Intl.DateTimeFormat('es-VE', {
@@ -37,25 +37,67 @@ const formatearHora = (fecha: string) =>
         minute: '2-digit',
     }).format(new Date(fecha));
 
-const esFinalizado = (evento: Evento) => {
-    const fechaFin = evento.fecha_fin ? new Date(evento.fecha_fin) : new Date(evento.fecha_inicio);
-    return fechaFin < new Date();
+const obtenerEstado = (evento: Evento) => {
+    const ahora = new Date();
+    const inicio = new Date(evento.fecha_inicio);
+    const fin = evento.fecha_fin ? new Date(evento.fecha_fin) : inicio;
+
+    if (inicio <= ahora && fin >= ahora) return 'en-curso';
+    if (fin < ahora) return 'finalizado';
+    return 'proximo';
 };
 
-export default function Show() {
-    const finalizado = esFinalizado(evento);
+export default function Show({ evento }: Props) {
+    const estado = obtenerEstado(evento);
+    const finalizado = estado === 'finalizado';
+    const enCurso = estado === 'en-curso';
+
+    const imagenes = [
+        ...(evento.imagen_portada ? [{ url: evento.imagen_portada, alt: evento.titulo }] : []),
+        ...evento.imagenes,
+    ];
+
+    const [imagenSeleccionada, setImagenSeleccionada] = useState<number | null>(null);
 
     const compartir = async () => {
         if (navigator.share) {
             await navigator.share({
                 title: evento.titulo,
-                text: evento.descripcion,
+                text: evento.descripcion_corta,
                 url: window.location.href,
             });
         } else {
             await navigator.clipboard.writeText(window.location.href);
         }
     };
+
+    const imagenAnterior = () => {
+        if (imagenSeleccionada === null || imagenes.length === 0) return;
+        setImagenSeleccionada((imagenSeleccionada - 1 + imagenes.length) % imagenes.length);
+    };
+
+    const imagenSiguiente = () => {
+        if (imagenSeleccionada === null || imagenes.length === 0) return;
+        setImagenSeleccionada((imagenSeleccionada + 1) % imagenes.length);
+    };
+
+    useEffect(() => {
+        if (imagenSeleccionada === null) return;
+
+        const manejarTeclado = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setImagenSeleccionada(null);
+            if (e.key === 'ArrowLeft') imagenAnterior();
+            if (e.key === 'ArrowRight') imagenSiguiente();
+        };
+
+        document.addEventListener('keydown', manejarTeclado);
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.removeEventListener('keydown', manejarTeclado);
+            document.body.style.overflow = '';
+        };
+    }, [imagenSeleccionada]);
 
     return (
         <>
@@ -64,7 +106,7 @@ export default function Show() {
                 <article className="bg-slate-50">
                     <div className="mx-auto max-w-6xl px-5 pt-8 lg:px-8">
                         <Link
-                            href="/eventos"
+                            href={route('web.eventos')}
                             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-blue-700"
                         >
                             <ArrowLeft className="h-4 w-4" />
@@ -87,11 +129,18 @@ export default function Show() {
                                     </div>
                                 )}
 
-                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 pt-24 sm:p-10 sm:pt-32">
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent p-6 pt-24 sm:p-10 sm:pt-32">
                                     <div className="flex flex-wrap items-center gap-3">
                                         <span className="rounded-full bg-blue-700 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
                                             Evento
                                         </span>
+
+                                        {enCurso && (
+                                            <span className="flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white">
+                                                <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
+                                                En curso
+                                            </span>
+                                        )}
 
                                         {finalizado && (
                                             <span className="flex items-center gap-2 rounded-full bg-slate-900/85 px-4 py-1.5 text-xs font-semibold text-white">
@@ -118,6 +167,10 @@ export default function Show() {
                                         </h2>
                                     </div>
 
+                                    <p className="mb-6 text-lg font-medium leading-8 text-slate-700">
+                                        {evento.descripcion_corta}
+                                    </p>
+
                                     <div className="max-w-3xl text-base leading-8 text-slate-600">
                                         {evento.descripcion.split('\n').map((parrafo, index) => (
                                             <p key={index} className={index > 0 ? 'mt-5' : ''}>
@@ -125,6 +178,41 @@ export default function Show() {
                                             </p>
                                         ))}
                                     </div>
+
+                                    {evento.imagenes.length > 0 && (
+                                        <div className="mt-12 border-t border-slate-200 pt-8">
+                                            <div className="mb-5">
+                                                <p className="text-sm font-bold uppercase tracking-widest text-blue-700">
+                                                    Galería
+                                                </p>
+                                                <h2 className="mt-2 text-2xl font-bold text-slate-900">
+                                                    Imágenes del evento
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                                                {evento.imagenes.map((imagen, index) => {
+                                                    const indice = evento.imagen_portada ? index + 1 : index;
+
+                                                    return (
+                                                        <button
+                                                            key={`${imagen.url}-${index}`}
+                                                            type="button"
+                                                            onClick={() => setImagenSeleccionada(indice)}
+                                                            className="group relative aspect-square overflow-hidden rounded-xl bg-slate-200"
+                                                        >
+                                                            <img
+                                                                src={imagen.url}
+                                                                alt={imagen.alt}
+                                                                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                                            />
+                                                            <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/20" />
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className="mt-10 border-t border-slate-200 pt-7">
                                         <button
@@ -168,9 +256,7 @@ export default function Show() {
                                                 </p>
                                                 <p className="mt-1 text-sm font-medium leading-6 text-slate-700">
                                                     {formatearHora(evento.fecha_inicio)}
-                                                    {evento.fecha_fin && (
-                                                        <> - {formatearHora(evento.fecha_fin)}</>
-                                                    )}
+                                                    {evento.fecha_fin && <> - {formatearHora(evento.fecha_fin)}</>}
                                                 </p>
                                             </div>
                                         </div>
@@ -192,6 +278,20 @@ export default function Show() {
                                         )}
                                     </div>
 
+                                    {enCurso && (
+                                        <div className="mt-8 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                                            <span className="mt-1 h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-emerald-500" />
+                                            <div>
+                                                <p className="text-sm font-semibold text-emerald-800">
+                                                    Evento en curso
+                                                </p>
+                                                <p className="mt-1 text-xs leading-5 text-emerald-700">
+                                                    Esta actividad se encuentra actualmente en desarrollo.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {finalizado && (
                                         <div className="mt-8 flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4">
                                             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />
@@ -210,6 +310,84 @@ export default function Show() {
                         </div>
                     </div>
                 </article>
+
+                {imagenSeleccionada !== null && imagenes[imagenSeleccionada] && (
+                    <div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-5"
+                        onClick={() => setImagenSeleccionada(null)}
+                    >
+                        <button
+                            type="button"
+                            onClick={() => setImagenSeleccionada(null)}
+                            className="absolute right-5 top-5 z-10 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+                            aria-label="Cerrar galería"
+                        >
+                            <X className="h-6 w-6" />
+                        </button>
+
+                        {imagenes.length > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        imagenAnterior();
+                                    }}
+                                    className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
+                                    aria-label="Imagen anterior"
+                                >
+                                    <ArrowLeft className="h-6 w-6" />
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        imagenSiguiente();
+                                    }}
+                                    className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
+                                    aria-label="Imagen siguiente"
+                                >
+                                    <ArrowRight className="h-6 w-6" />
+                                </button>
+                            </>
+                        )}
+
+                        <div
+                            className="flex max-h-full max-w-6xl flex-col items-center"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <img
+                                src={imagenes[imagenSeleccionada].url}
+                                alt={imagenes[imagenSeleccionada].alt}
+                                className="max-h-[80vh] max-w-full rounded-lg object-contain"
+                            />
+
+                            {imagenes.length > 1 && (
+                                <div className="mt-4 flex max-w-full gap-2 overflow-x-auto pb-2">
+                                    {imagenes.map((imagen, index) => (
+                                        <button
+                                            key={`${imagen.url}-thumb-${index}`}
+                                            type="button"
+                                            onClick={() => setImagenSeleccionada(index)}
+                                            className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${
+                                                index === imagenSeleccionada
+                                                    ? 'border-white'
+                                                    : 'border-transparent opacity-60 hover:opacity-100'
+                                            }`}
+                                        >
+                                            <img
+                                                src={imagen.url}
+                                                alt={imagen.alt}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
             </WebLayout>
         </>
     );
