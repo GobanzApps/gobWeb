@@ -15,7 +15,9 @@ class Plan extends Model
 
     protected $fillable = [
         'titulo',
+        'descripcion_corta',
         'descripcion',
+        'imagen_portada',
         'estado_id',
         'fecha_inicio',
         'fecha_estimada_finalizacion',

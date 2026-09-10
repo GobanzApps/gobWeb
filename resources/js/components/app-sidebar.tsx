@@ -16,24 +16,24 @@ const platformItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Planes',
-        url: '/sys/planes',
-        icon: ClipboardCheck,
-    },
-    {
-        title: 'Eventos',
-        url: '/sys/eventos',
-        icon: CalendarCheck,
-    },
-    {
         title: 'Gacetas',
         url: '/sys/gacetas',
         icon: Megaphone,
     },
     {
+        title: 'Planes',
+        url: '/sys/planes',
+        icon: ClipboardCheck,
+    },
+    {
         title: 'Noticias',
         url: '/sys/noticias',
         icon: ScrollText,
+    },
+    {
+        title: 'Eventos',
+        url: '/sys/eventos',
+        icon: CalendarCheck,
     },
 ];
 

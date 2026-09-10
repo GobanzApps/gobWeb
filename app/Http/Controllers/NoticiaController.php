@@ -63,30 +63,28 @@ class NoticiaController extends Controller
     public function store(StoreNoticiaRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
         $imagenes = $data['imagenes'] ?? [];
         unset($data['imagenes']);
-
         $data['publicado'] = $request->boolean('publicado');
         $data['created_by'] = Auth::id();
+
+        if ($request->hasFile('imagen_portada')) {
+            $data['imagen_portada'] = $request->file('imagen_portada')->store('noticias/portadas', 'public');
+        }
 
         $noticia = Noticia::create($data);
 
         foreach ($imagenes as $imagen) {
-            $path = $imagen->store('noticias', 'public');
-
             $noticia->imagenes()->create([
                 'nombre_original' => $imagen->getClientOriginalName(),
-                'archivo' => $path,
+                'archivo' => $imagen->store('noticias', 'public'),
                 'alt_text' => $noticia->titulo,
                 'orden' => 0,
                 'created_by' => Auth::id(),
             ]);
         }
 
-        return redirect()
-            ->route('noticias.index')
-            ->with('success', 'Noticia creada correctamente.');
+        return redirect()->route('noticias.index')->with('success', 'Noticia creada correctamente.');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -120,40 +118,40 @@ class NoticiaController extends Controller
     public function update(UpdateNoticiaRequest $request, Noticia $noticia): RedirectResponse
     {
         $data = $request->validated();
-
         $imagenes = $data['imagenes'] ?? [];
         $imagenesEliminar = $data['imagenes_eliminar'] ?? [];
-
         unset($data['imagenes'], $data['imagenes_eliminar']);
-
         $data['publicado'] = $request->boolean('publicado');
         $data['updated_by'] = Auth::id();
+
+        if ($request->hasFile('imagen_portada')) {
+            if ($noticia->imagen_portada) {
+                Storage::disk('public')->delete($noticia->imagen_portada);
+            }
+
+            $data['imagen_portada'] = $request->file('imagen_portada')->store('noticias/portadas', 'public');
+        } else {
+            unset($data['imagen_portada']);
+        }
 
         $noticia->update($data);
 
         foreach ($noticia->imagenes()->whereIn('id', $imagenesEliminar)->get() as $imagen) {
-            if ($imagen->archivo) {
-                Storage::disk('public')->delete($imagen->archivo);
-            }
-
+            if ($imagen->archivo) Storage::disk('public')->delete($imagen->archivo);
             $imagen->delete();
         }
 
         foreach ($imagenes as $imagen) {
-            $path = $imagen->store('noticias', 'public');
-
             $noticia->imagenes()->create([
                 'nombre_original' => $imagen->getClientOriginalName(),
-                'archivo' => $path,
+                'archivo' => $imagen->store('noticias', 'public'),
                 'alt_text' => $noticia->titulo,
                 'orden' => 0,
                 'created_by' => Auth::id(),
             ]);
         }
 
-        return redirect()
-            ->route('noticias.index')
-            ->with('success', 'Noticia actualizada correctamente.');
+        return redirect()->route('noticias.index')->with('success', 'Noticia actualizada correctamente.');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/

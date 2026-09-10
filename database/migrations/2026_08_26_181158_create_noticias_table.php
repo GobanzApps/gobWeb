@@ -11,7 +11,9 @@ return new class extends Migration
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
+            $table->string('descripcion_corta', 100);
             $table->text('descripcion');
+            $table->string('imagen_portada')->nullable();
             $table->boolean('publicado')->default(false);
 
             $table->foreignId('created_by')

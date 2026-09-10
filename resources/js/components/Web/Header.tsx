@@ -30,6 +30,8 @@ export default function Header() {
 
                 {/* DESKTOP NAV */}
                 <nav className="hidden items-center gap-1 lg:flex">
+                    <a href="/" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Inicio</a>
+
                     <div className="relative">
                         <button onClick={() => toggleMenu('gobernacion')} className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${menuAbierto === 'gobernacion' ? 'text-blue-700' : 'text-slate-700 hover:text-blue-700'}`}>
                             Gobernación <ChevronDown className="h-4 w-4" />
@@ -93,9 +95,9 @@ export default function Header() {
                         )}
                     </div>
 
-                    <a href="#planes" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Planes</a>
-                    <a href="#noticias" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Noticias</a>
-                    <a href="#eventos" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Eventos</a>
+                    <a href="/planes" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Planes</a>
+                    <a href="/noticias" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Noticias</a>
+                    <a href="/eventos" onClick={cerrarMenus} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-700">Eventos</a>
                 </nav>
 
                 <div className="flex items-center gap-3">
@@ -110,6 +112,8 @@ export default function Header() {
             {mobileMenu && (
                 <div className="border-t bg-white px-5 py-4 lg:hidden">
                     <div className="flex flex-col gap-1">
+                        <a href="/" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Inicio</a>
+
                         <button onClick={() => toggleMenu('mobileGob')} className="flex items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium">Gobernación <ChevronDown className="h-4 w-4" /></button>
                         {menuAbierto === 'mobileGob' && (
                             <div className="mb-2 rounded-lg bg-slate-50 px-4 py-2">
@@ -143,9 +147,9 @@ export default function Header() {
                             </div>
                         )}
 
-                        <a href="#noticias" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Noticias</a>
-                        <a href="#eventos" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Eventos</a>
-                        <a href="#planes" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Planes</a>
+                        <a href="/planes" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Planes</a>
+                        <a href="/noticias" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Noticias</a>
+                        <a href="/eventos" onClick={cerrarMenus} className="rounded-lg px-3 py-3 text-sm font-medium">Eventos</a>
                         <Link href={route('login')} className="mt-2 rounded-lg bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white">Ingresar al sistema</Link>
                     </div>
                 </div>

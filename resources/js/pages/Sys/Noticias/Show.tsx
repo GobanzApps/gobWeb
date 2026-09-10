@@ -24,7 +24,9 @@ interface Imagen {
 interface Noticia {
     id: number;
     titulo: string;
+    descripcion_corta: string;
     descripcion: string;
+    imagen_portada: string | null;
     publicado: boolean;
     created_at: string;
     updated_at: string;
@@ -57,9 +59,7 @@ export default function Show({ noticia }: Props) {
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-semibold">{noticia.titulo}</h1>
-                        <p className="text-sm text-muted-foreground">
-                            Detalles de la noticia
-                        </p>
+                        <p className="text-sm text-muted-foreground">Detalles de la noticia</p>
                     </div>
 
                     <div className="flex gap-2">
@@ -89,27 +89,24 @@ export default function Show({ noticia }: Props) {
                             </div>
                             <div>
                                 <h2 className="font-semibold">Información de la noticia</h2>
-                                <p className="text-sm text-muted-foreground">
-                                    Contenido publicado en el sitio web.
-                                </p>
+                                <p className="text-sm text-muted-foreground">Contenido de la noticia.</p>
                             </div>
                         </div>
 
                         <div className="space-y-6">
                             <div>
-                                <p className="mb-2 text-sm font-medium text-muted-foreground">
-                                    Título
-                                </p>
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">Título</p>
                                 <p className="text-lg font-medium">{noticia.titulo}</p>
                             </div>
 
                             <div>
-                                <p className="mb-2 text-sm font-medium text-muted-foreground">
-                                    Descripción
-                                </p>
-                                <div className="whitespace-pre-wrap text-sm leading-6">
-                                    {noticia.descripcion}
-                                </div>
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">Descripción corta</p>
+                                <p className="text-sm leading-6">{noticia.descripcion_corta}</p>
+                            </div>
+
+                            <div>
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">Contenido</p>
+                                <div className="whitespace-pre-wrap text-sm leading-6">{noticia.descripcion}</div>
                             </div>
                         </div>
                     </div>
@@ -125,9 +122,7 @@ export default function Show({ noticia }: Props) {
                                     </div>
                                     <div>
                                         <p className="font-medium">Publicada</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Visible en el sitio web.
-                                        </p>
+                                        <p className="text-sm text-muted-foreground">Visible en el sitio web.</p>
                                     </div>
                                 </>
                             ) : (
@@ -137,9 +132,7 @@ export default function Show({ noticia }: Props) {
                                     </div>
                                     <div>
                                         <p className="font-medium">No publicada</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            No visible en el sitio web.
-                                        </p>
+                                        <p className="text-sm text-muted-foreground">No visible en el sitio web.</p>
                                     </div>
                                 </>
                             )}
@@ -149,12 +142,8 @@ export default function Show({ noticia }: Props) {
                             <div className="flex items-center gap-3">
                                 <CalendarDays className="h-4 w-4 text-muted-foreground" />
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
-                                        Creada
-                                    </p>
-                                    <p className="text-sm">
-                                        {new Date(noticia.created_at).toLocaleString()}
-                                    </p>
+                                    <p className="text-xs text-muted-foreground">Creada</p>
+                                    <p className="text-sm">{new Date(noticia.created_at).toLocaleString()}</p>
                                 </div>
                             </div>
 
@@ -162,12 +151,8 @@ export default function Show({ noticia }: Props) {
                                 <div className="flex items-center gap-3">
                                     <User className="h-4 w-4 text-muted-foreground" />
                                     <div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Creada por
-                                        </p>
-                                        <p className="text-sm">
-                                            {noticia.creador.name}
-                                        </p>
+                                        <p className="text-xs text-muted-foreground">Creada por</p>
+                                        <p className="text-sm">{noticia.creador.name}</p>
                                     </div>
                                 </div>
                             )}
@@ -176,15 +161,9 @@ export default function Show({ noticia }: Props) {
                                 <div className="flex items-center gap-3">
                                     <User className="h-4 w-4 text-muted-foreground" />
                                     <div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Última modificación
-                                        </p>
-                                        <p className="text-sm">
-                                            {new Date(noticia.updated_at).toLocaleString()}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                            por {noticia.editor.name}
-                                        </p>
+                                        <p className="text-xs text-muted-foreground">Última modificación</p>
+                                        <p className="text-sm">{new Date(noticia.updated_at).toLocaleString()}</p>
+                                        <p className="text-xs text-muted-foreground">por {noticia.editor.name}</p>
                                     </div>
                                 </div>
                             )}
@@ -200,44 +179,64 @@ export default function Show({ noticia }: Props) {
                         <div>
                             <h2 className="font-semibold">Imágenes</h2>
                             <p className="text-sm text-muted-foreground">
-                                {noticia.imagenes.length} imagen
-                                {noticia.imagenes.length !== 1 ? 'es' : ''} asociada
-                                {noticia.imagenes.length !== 1 ? 's' : ''} a esta noticia.
+                                {noticia.imagen_portada ? '1 portada' : 'Sin portada'} · {noticia.imagenes.length} imagen
+                                {noticia.imagenes.length !== 1 ? 'es' : ''} adicional
+                                {noticia.imagenes.length !== 1 ? 'es' : ''}
                             </p>
                         </div>
                     </div>
 
-                    {noticia.imagenes.length > 0 ? (
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            {noticia.imagenes.map((imagen) => (
-                                <div
-                                    key={imagen.id}
-                                    className="overflow-hidden rounded-lg border"
-                                >
+                    <div className="grid gap-6 lg:grid-cols-3">
+                        <div>
+                            <p className="mb-3 text-sm font-medium">Imagen de portada</p>
+
+                            {noticia.imagen_portada ? (
+                                <div className="overflow-hidden rounded-lg border">
                                     <img
-                                        src={`/storage/${imagen.archivo}`}
-                                        alt={imagen.alt_text ?? noticia.titulo}
+                                        src={`/storage/${noticia.imagen_portada}`}
+                                        alt={noticia.titulo}
                                         className="aspect-video w-full object-cover"
                                     />
                                     <div className="p-3">
-                                        <p className="truncate text-sm font-medium">
-                                            {imagen.nombre_original}
-                                        </p>
+                                        <p className="truncate text-sm font-medium">Portada de la noticia</p>
                                     </div>
                                 </div>
-                            ))}
+                            ) : (
+                                <div className="flex aspect-video flex-col items-center justify-center rounded-lg border border-dashed text-center">
+                                    <ImageIcon className="mb-3 h-8 w-8 text-muted-foreground" />
+                                    <p className="text-sm font-medium">Sin imagen de portada</p>
+                                    <p className="text-xs text-muted-foreground">Esta noticia no tiene portada.</p>
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12 text-center">
-                            <ImageIcon className="mb-3 h-8 w-8 text-muted-foreground" />
-                            <p className="text-sm font-medium">
-                                No hay imágenes
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                Esta noticia no tiene imágenes asociadas.
-                            </p>
+
+                        <div className="lg:col-span-2">
+                            <p className="mb-3 text-sm font-medium">Galería</p>
+
+                            {noticia.imagenes.length > 0 ? (
+                                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                                    {noticia.imagenes.map((imagen) => (
+                                        <div key={imagen.id} className="overflow-hidden rounded-lg border">
+                                            <img
+                                                src={`/storage/${imagen.archivo}`}
+                                                alt={imagen.alt_text ?? noticia.titulo}
+                                                className="aspect-video w-full object-cover"
+                                            />
+                                            <div className="p-3">
+                                                <p className="truncate text-sm font-medium">{imagen.nombre_original}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex aspect-video flex-col items-center justify-center rounded-lg border border-dashed text-center">
+                                    <ImageIcon className="mb-3 h-8 w-8 text-muted-foreground" />
+                                    <p className="text-sm font-medium">No hay imágenes adicionales</p>
+                                    <p className="text-xs text-muted-foreground">La galería está vacía.</p>
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </AppLayout>

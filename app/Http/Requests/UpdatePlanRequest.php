@@ -16,7 +16,9 @@ class UpdatePlanRequest extends FormRequest
     {
         return [
             'titulo' => ['required', 'string', 'max:255'],
+            'descripcion_corta' => ['required', 'string', 'max:60'],
             'descripcion' => ['required', 'string'],
+            'imagen_portada' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
             'estado_id' => ['required', 'integer',
                 Rule::exists('estados_plan', 'id')
                     ->where('activo', true),
@@ -28,11 +30,7 @@ class UpdatePlanRequest extends FormRequest
 
             // Imágenes nuevas
             'imagenes' => ['nullable', 'array', 'max:10'],
-            'imagenes.*' => [
-                'image',
-                'mimes:jpeg,png,webp',
-                'max:5120',
-            ],
+            'imagenes.*' => ['image', 'mimes:jpeg,png,webp', 'max:5120'],
         ];
     }
 
@@ -43,8 +41,16 @@ class UpdatePlanRequest extends FormRequest
             'titulo.string' => 'El título del plan debe ser texto.',
             'titulo.max' => 'El título no puede superar los 255 caracteres.',
 
+            'descripcion_corta.required' => 'La descripción corta del plan es obligatoria.',
+            'descripcion_corta.string' => 'La descripción corta debe ser texto.',
+            'descripcion_corta.max' => 'La descripción corta no puede superar los 60 caracteres.',
+
             'descripcion.required' => 'La descripción del plan es obligatoria.',
             'descripcion.string' => 'La descripción debe ser texto.',
+
+            'imagen_portada.image' => 'La imagen de portada no es válida.',
+            'imagen_portada.mimes' => 'La imagen de portada debe ser JPG, PNG o WebP.',
+            'imagen_portada.max' => 'La imagen de portada no puede superar los 5 MB.',
 
             'estado_id.required' => 'Debes seleccionar un estado.',
             'estado_id.integer' => 'El estado seleccionado no es válido.',

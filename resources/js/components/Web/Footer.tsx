@@ -55,14 +55,16 @@ export default function Footer() {
 
                         <div className="mt-6 flex gap-2 md:justify-end">
                             <a
-                                href="#"
+                                href="https://www.facebook.com/AnzoateguiGob/"
+                                target="_blank"
                                 className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
                             >
                                 <Facebook className="h-4 w-4" />
                             </a>
 
                             <a
-                                href="#"
+                                href="https://www.instagram.com/anzoateguigob/"
+                                target="_blank"
                                 className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
                             >
                                 <Instagram className="h-4 w-4" />

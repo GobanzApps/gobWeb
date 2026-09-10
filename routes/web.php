@@ -20,6 +20,10 @@ use App\Http\Controllers\EstadoPlanController;
 
 Route::get('/', [WebController::class, 'index'])->name('home');
 Route::get('/planes', [WebController::class, 'planes'])->name('web.planes');
+Route::get('/noticias', [WebController::class, 'noticias'])->name('web.noticias');
+Route::get('/noticias/{noticia}', [WebController::class, 'noticia'])->name('web.noticia');
+Route::get('/eventos', [WebController::class, 'eventos'])->name('web.eventos');
+Route::get('/eventos/{evento}', [WebController::class, 'evento'])->name('web.evento');
 
 /*
 |--------------------------------------------------------------------------

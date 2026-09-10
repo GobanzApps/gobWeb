@@ -71,9 +71,7 @@ class PlanController extends Controller
             ->orderBy('nombre')
             ->get(['id', 'nombre']);
 
-        return Inertia::render('Sys/Planes/Create', [
-            'estadosPlan' => $estadosPlan,
-        ]);
+        return Inertia::render('Sys/Planes/Create', ['estadosPlan' => $estadosPlan]);
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -84,14 +82,18 @@ class PlanController extends Controller
         $validated['created_by'] = Auth::id();
 
         DB::transaction(function () use ($request, $validated) {
-            $plan = Plan::create($validated);
+            $imagenPortada = $request->file('imagen_portada');
+            unset($validated['imagen_portada']);
 
+            if ($imagenPortada) {
+                $validated['imagen_portada'] = $imagenPortada->store('planes/portadas', 'public');
+            }
+
+            $plan = Plan::create($validated);
             $this->guardarImagenes($request, $plan);
         });
 
-        return redirect()
-            ->route('planes.index')
-            ->with('success', 'Plan creado correctamente.');
+        return redirect()->route('planes.index')->with('success', 'Plan creado correctamente.');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -105,9 +107,7 @@ class PlanController extends Controller
             'imagenes' => fn ($query) => $query->orderBy('orden'),
         ]);
 
-        return Inertia::render('Sys/Planes/Show', [
-            'plan' => $plan,
-        ]);
+        return Inertia::render('Sys/Planes/Show', ['plan' => $plan]);
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -115,16 +115,11 @@ class PlanController extends Controller
     public function edit(Plan $plan): Response
     {
         $estadosPlan = EstadoPlan::query()
-            ->where(function ($query) use ($plan) {
-                $query->where('activo', true)
-                    ->orWhere('id', $plan->estado_id);
-            })
+            ->where(fn ($query) => $query->where('activo', true)->orWhere('id', $plan->estado_id))
             ->orderBy('nombre')
             ->get(['id', 'nombre', 'activo']);
 
-        $plan->load([
-            'imagenes' => fn ($query) => $query->orderBy('orden'),
-        ]);
+        $plan->load(['imagenes' => fn ($query) => $query->orderBy('orden')]);
 
         return Inertia::render('Sys/Planes/Edit', [
             'plan' => $plan,
@@ -134,51 +129,40 @@ class PlanController extends Controller
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    public function update(
-        UpdatePlanRequest $request,
-        Plan $plan
-    ): RedirectResponse {
+    public function update(UpdatePlanRequest $request, Plan $plan): RedirectResponse
+    {
         $validated = $request->validated();
 
         DB::transaction(function () use ($request, $plan, $validated) {
-
             $validated['updated_by'] = Auth::id();
+
+            if ($request->hasFile('imagen_portada')) {
+                if ($plan->imagen_portada) {
+                    Storage::disk('public')->delete($plan->imagen_portada);
+                }
+
+                $validated['imagen_portada'] = $request->file('imagen_portada')->store('planes/portadas', 'public');
+            } else {
+                unset($validated['imagen_portada']);
+            }
 
             $plan->update($validated);
 
-            /*
-             * Eliminar imágenes seleccionadas.
-             */
-            $imagenesEliminar = $request->input(
-                'imagenes_eliminar',
-                []
-            );
+            $imagenesEliminar = $request->input('imagenes_eliminar', []);
 
             if (!empty($imagenesEliminar)) {
-
-                $imagenes = $plan->imagenes()
-                    ->whereIn('id', $imagenesEliminar)
-                    ->get();
+                $imagenes = $plan->imagenes()->whereIn('id', $imagenesEliminar)->get();
 
                 foreach ($imagenes as $imagen) {
-
-                    Storage::disk('public')->delete(
-                        $imagen->archivo
-                    );
-
+                    Storage::disk('public')->delete($imagen->archivo);
                     $imagen->delete();
                 }
             }
 
-            /*
-             * Guardar imágenes nuevas.
-             */
             $this->guardarImagenes($request, $plan);
         });
 
-        return redirect()
-            ->route('planes.index')
-            ->with('success', 'Plan actualizado correctamente.');
+        return redirect()->route('planes.index')->with('success', 'Plan actualizado correctamente.');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/

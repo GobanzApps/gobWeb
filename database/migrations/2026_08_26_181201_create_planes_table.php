@@ -11,7 +11,10 @@ return new class extends Migration
         Schema::create('planes', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
+            $table->string('descripcion_corta', 60);
             $table->text('descripcion');
+
+            $table->string('imagen_portada')->nullable();
 
             $table->foreignId('estado_id')
                 ->constrained('estados_plan')
