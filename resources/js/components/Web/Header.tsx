@@ -38,11 +38,11 @@ export default function Header() {
                         </button>
                         {menuAbierto === 'gobernacion' && (
                             <div className="absolute left-0 top-full mt-2 w-70 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-                                <Link href="/gobernacion/historia" onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Historia</span><span className="mt-1 block text-xs text-slate-500">Conoce la historia de nuestra Gobernación</span></Link>
-                                <Link href="/gobernacion/mandatos" onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Mandatos</span><span className="mt-1 block text-xs text-slate-500">Gobernantes del Estado Anzoátegui</span></Link>
+                                <Link href={route('web.historia')} onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Historia</span><span className="mt-1 block text-xs text-slate-500">Conoce la historia de nuestra Gobernación</span></Link>
+                                <Link href={route('web.mandatos')} onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Mandatos</span><span className="mt-1 block text-xs text-slate-500">Gobernantes del Estado Anzoátegui</span></Link>
                                 <Link href="/gobernacion/entes-adscritos" onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Entes Adscritos</span><span className="mt-1 block text-xs text-slate-500">Instituciones y organismos</span></Link>
                                 <Link href="/gobernacion/gabinetes" onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Gabinetes</span><span className="mt-1 block text-xs text-slate-500">Conoce nuestros gabinetes</span></Link>
-                                <Link href="/gobernacion/gacetas" onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Gacetas</span><span className="mt-1 block text-xs text-slate-500">Gacetas oficiales del Estado Anzoátegui</span></Link>                                
+                                <Link href={route('web.gacetas')} onClick={cerrarMenus} className="block rounded-lg px-4 py-3 text-sm hover:bg-blue-50"><span className="font-semibold">Gacetas</span><span className="mt-1 block text-xs text-slate-500">Gacetas oficiales del Estado Anzoátegui</span></Link>                                
                             </div>
                         )}
                     </div>

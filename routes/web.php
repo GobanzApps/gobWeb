@@ -18,12 +18,21 @@ use App\Http\Controllers\GabineteController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\EstadoPlanController;
 
+use App\Http\Controllers\GobernacionController;
+
 Route::get('/', [WebController::class, 'index'])->name('home');
 Route::get('/planes', [WebController::class, 'planes'])->name('web.planes');
 Route::get('/noticias', [WebController::class, 'noticias'])->name('web.noticias');
 Route::get('/noticias/{noticia}', [WebController::class, 'noticia'])->name('web.noticia');
 Route::get('/eventos', [WebController::class, 'eventos'])->name('web.eventos');
 Route::get('/eventos/{evento}', [WebController::class, 'evento'])->name('web.evento');
+
+Route::get('/gobernacion', [GobernacionController::class, 'index'])->name('web.gobernacion');
+Route::get('/gobernacion/historia', [GobernacionController::class, 'historia'])->name('web.historia');
+Route::get('/gobernacion/mandatos', [GobernacionController::class, 'mandatos'])->name('web.mandatos');
+// Route::get('/gobernacion/entes-adscritos', [GobernacionController::class, 'entesAdscritos'])->name('web.entes-adscritos');
+// Route::get('/gobernacion/gabinetes', [GobernacionController::class, 'gabinetes'])->name('web.gabinetes');
+Route::get('/gobernacion/gacetas', [GobernacionController::class, 'gacetas'])->name('web.gacetas');
 
 /*
 |--------------------------------------------------------------------------
