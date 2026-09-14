@@ -136,7 +136,7 @@ export default function Welcome({planes, noticias, eventos}: {planes: Plan[]; no
                             ))}
                         </div>
 
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-950/80 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-95/80 to-transparent" />
 
                         <div className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-7xl items-center px-6 py-20 lg:px-8">
                             <div className="max-w-xl text-white">
