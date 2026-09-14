@@ -15,7 +15,7 @@ class UpdateNoticiaRequest extends FormRequest
     {
         return [
             'titulo' => ['required', 'string', 'max:255'],
-            'descripcion_corta' => ['required', 'string', 'max:100'],
+            'descripcion_corta' => ['required', 'string', 'max:250'],
             'descripcion' => ['required', 'string'],
             'imagen_portada' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'publicado' => ['boolean'],

@@ -156,14 +156,14 @@ export default function Form({ estadosPlan, plan }: Props) {
                                 Descripción corta <span className="text-red-500">*</span>
                             </label>
                             <Textarea id="descripcion_corta" value={data.descripcion_corta}
-                                onChange={(e) => setData('descripcion_corta', e.target.value.slice(0, 60))}
+                                onChange={(e) => setData('descripcion_corta', e.target.value.slice(0, 250))}
                                 placeholder="Descripción breve para mostrar en las tarjetas."
-                                rows={2} maxLength={60} disabled={processing} className="resize-none" />
+                                rows={2} maxLength={250} disabled={processing} className="resize-none" />
                             <div className="flex justify-between">
                                 {errors.descripcion_corta
                                     ? <p className="text-sm text-red-600">{errors.descripcion_corta}</p>
                                     : <span />}
-                                <span className="text-xs text-muted-foreground">{data.descripcion_corta.length}/60</span>
+                                <span className="text-xs text-muted-foreground">{data.descripcion_corta.length}/250</span>
                             </div>
                         </div>
 

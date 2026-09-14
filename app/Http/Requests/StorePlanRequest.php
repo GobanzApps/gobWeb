@@ -16,7 +16,7 @@ class StorePlanRequest extends FormRequest
     {
         return [
             'titulo' => ['required', 'string', 'max:255'],
-            'descripcion_corta' => ['required', 'string', 'max:60'],
+            'descripcion_corta' => ['required', 'string', 'max:250'],
             'descripcion' => ['required', 'string'],
             'imagen_portada' => ['required', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
             'estado_id' => ['required', 'integer',

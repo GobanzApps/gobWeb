@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
-            $table->string('descripcion_corta', 100);
+            $table->string('descripcion_corta', 250);
             $table->text('descripcion');
             $table->string('imagen_portada')->nullable();
             $table->boolean('publicado')->default(false);

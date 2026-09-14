@@ -259,9 +259,9 @@ export default function Form({ evento }: Props) {
                         <div className="space-y-2 md:col-span-2">
                             <div className="flex items-center justify-between">
                                 <label htmlFor="descripcion_corta" className="text-sm font-medium">Descripción corta <span className="text-red-500">*</span></label>
-                                <span className="text-xs text-muted-foreground">{data.descripcion_corta.length}/100</span>
+                                <span className="text-xs text-muted-foreground">{data.descripcion_corta.length}/250</span>
                             </div>
-                            <Input id="descripcion_corta" value={data.descripcion_corta} onChange={(e) => setData('descripcion_corta', e.target.value)} placeholder="Resumen breve del evento" maxLength={100} disabled={processing} />
+                            <Input id="descripcion_corta" value={data.descripcion_corta} onChange={(e) => setData('descripcion_corta', e.target.value)} placeholder="Resumen breve del evento" maxLength={250} disabled={processing} />
                             {errors.descripcion_corta && <p className="text-sm text-red-600">{errors.descripcion_corta}</p>}
                         </div>
 

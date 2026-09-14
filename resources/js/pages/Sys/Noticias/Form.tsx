@@ -145,14 +145,14 @@ export default function Form({ noticia }: Props) {
                                 <label htmlFor="descripcion_corta" className="text-sm font-medium">
                                     Descripción corta <span className="text-red-500">*</span>
                                 </label>
-                                <span className={`text-xs ${data.descripcion_corta.length >= 100 ? 'text-red-600' : 'text-muted-foreground'}`}>
-                                    {data.descripcion_corta.length}/100
+                                <span className={`text-xs ${data.descripcion_corta.length >= 250 ? 'text-red-600' : 'text-muted-foreground'}`}>
+                                    {data.descripcion_corta.length}/250
                                 </span>
                             </div>
                             <Textarea
                                 id="descripcion_corta"
                                 value={data.descripcion_corta}
-                                onChange={(e) => setData('descripcion_corta', e.target.value.slice(0, 100))}
+                                onChange={(e) => setData('descripcion_corta', e.target.value.slice(0, 250))}
                                 placeholder="Breve resumen de la noticia..."
                                 rows={3}
                                 disabled={processing}
