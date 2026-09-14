@@ -137,7 +137,7 @@ export default function Index({ planes }: Props) {
                                     <div className="p-6">
                                         <h2 className="text-xl font-bold leading-snug text-slate-900">{plan.titulo}</h2>
 
-                                        <p className="mt-3 line-clamp-2 text-sm font-medium leading-6 text-slate-700">
+                                        <p className="mt-3 text-sm font-medium leading-6 text-slate-700">
                                             {plan.descripcion_corta}
                                         </p>
 
