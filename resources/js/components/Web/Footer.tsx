@@ -1,15 +1,5 @@
 import { useState } from 'react';
-import {
-    ArrowRight,
-    Clock3,
-    Facebook,
-    Instagram,
-    MapPin,
-    Mail,
-    Phone,
-    Send,
-    X,
-} from 'lucide-react';
+import { ArrowRight, Clock3, Facebook, Instagram, MapPin, Mail, Phone, Send, X } from 'lucide-react';
 
 const municipios = [
     'Anaco',

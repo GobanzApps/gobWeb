@@ -8,16 +8,9 @@ use Inertia\Inertia;
 
 class GobernacionController extends Controller
 {
-    public function historia()
+    public function entesAdscritos()
     {
-        return Inertia::render('Web/Gobernacion/Historia');
-    }
-
-    /*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-    public function mandatos()
-    {
-        return Inertia::render('Web/Gobernacion/Mandatos');
+        return Inertia::render('Web/Gobernacion/EntesAdscritos');
     }
 
     /*------------------------------------------------------------------------------------------------------------------------------------------*/

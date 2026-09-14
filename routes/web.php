@@ -19,6 +19,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\EstadoPlanController;
 
 use App\Http\Controllers\GobernacionController;
+use App\Http\Controllers\AcercaDeNosotrosController;
 
 Route::get('/', [WebController::class, 'index'])->name('home');
 Route::get('/planes', [WebController::class, 'planes'])->name('web.planes');
@@ -27,12 +28,33 @@ Route::get('/noticias/{noticia}', [WebController::class, 'noticia'])->name('web.
 Route::get('/eventos', [WebController::class, 'eventos'])->name('web.eventos');
 Route::get('/eventos/{evento}', [WebController::class, 'evento'])->name('web.evento');
 
+// Gobernación
 Route::get('/gobernacion', [GobernacionController::class, 'index'])->name('web.gobernacion');
-Route::get('/gobernacion/historia', [GobernacionController::class, 'historia'])->name('web.historia');
-Route::get('/gobernacion/mandatos', [GobernacionController::class, 'mandatos'])->name('web.mandatos');
-// Route::get('/gobernacion/entes-adscritos', [GobernacionController::class, 'entesAdscritos'])->name('web.entes-adscritos');
+Route::get('/gobernacion/entes-adscritos', [GobernacionController::class, 'entesAdscritos'])->name('web.entes-adscritos');
 // Route::get('/gobernacion/gabinetes', [GobernacionController::class, 'gabinetes'])->name('web.gabinetes');
 Route::get('/gobernacion/gacetas', [GobernacionController::class, 'gacetas'])->name('web.gacetas');
+
+Route::get('/acerca-de-nosotros/el-estado/historia', [AcercaDeNosotrosController::class, 'historia'])->name('web.acerca.historia');
+Route::get('/acerca-de-nosotros/el-estado/mandatos', [AcercaDeNosotrosController::class, 'mandatos'])->name('web.acerca.mandatos');
+Route::get('/acerca-de-nosotros/el-estado/geografia', [AcercaDeNosotrosController::class, 'geografia'])->name('web.acerca.geografia');
+Route::get('/acerca-de-nosotros/el-estado/efemerides', [AcercaDeNosotrosController::class, 'efemerides'])->name('web.acerca.efemerides');
+
+// Símbolos Patrimoniales
+Route::get('/acerca-de-nosotros/simbolos-patrimoniales/bandera', [AcercaDeNosotrosController::class, 'bandera'])->name('web.acerca.bandera');
+Route::get('/acerca-de-nosotros/simbolos-patrimoniales/escudo', [AcercaDeNosotrosController::class, 'escudo'])->name('web.acerca.escudo');
+Route::get('/acerca-de-nosotros/simbolos-patrimoniales/himno', [AcercaDeNosotrosController::class, 'himno'])->name('web.acerca.himno');
+
+// Naturaleza
+Route::get('/acerca-de-nosotros/naturaleza/flora-y-vegetacion', [AcercaDeNosotrosController::class, 'floraYVegetacion'])->name('web.acerca.flora-vegetacion');
+Route::get('/acerca-de-nosotros/naturaleza/recursos-minerales', [AcercaDeNosotrosController::class, 'recursosMinerales'])->name('web.acerca.recursos-minerales');
+Route::get('/acerca-de-nosotros/naturaleza/lagunas-y-rios', [AcercaDeNosotrosController::class, 'lagunasRios'])->name('web.acerca.lagunas-rios');
+Route::get('/acerca-de-nosotros/naturaleza/islas-y-bahias', [AcercaDeNosotrosController::class, 'islasBahias'])->name('web.acerca.islas-bahias');
+
+// Cultura
+Route::get('/acerca-de-nosotros/cultura/costumbres-y-tradiciones', [AcercaDeNosotrosController::class, 'costumbresTradiciones'])->name('web.acerca.costumbres-tradiciones');
+Route::get('/acerca-de-nosotros/cultura/bailes', [AcercaDeNosotrosController::class, 'bailes'])->name('web.acerca.bailes');
+Route::get('/acerca-de-nosotros/cultura/plazas', [AcercaDeNosotrosController::class, 'plazas'])->name('web.acerca.plazas');
+Route::get('/acerca-de-nosotros/cultura/sitios-historicos', [AcercaDeNosotrosController::class, 'sitiosHistoricos'])->name('web.acerca.sitios-historicos');
 
 /*
 |--------------------------------------------------------------------------

@@ -48,19 +48,21 @@ export default function Gacetas({ gacetas }: Props) {
                 <GobernacionNav activo="gacetas" />
 
                 <div className="page-enter">
-                    <section className="border-b border-slate-100 bg-slate-50">
-                        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
-                            <div className="max-w-3xl">
-                                <div className="mb-4 flex items-center gap-3">
+                    <section className="relative overflow-hidden bg-blue-950">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.25),transparent_40%)]" />
+                        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(30,64,175,0.3),transparent_50%)]" />
+                        <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
+                            <div className="max-w-4xl">
+                                <div className="mb-5 flex items-center gap-3">
                                     <span className="h-1 w-10 rounded-full bg-yellow-400" />
-                                    <span className="text-sm font-bold uppercase tracking-wider text-blue-700">
+                                    <span className="text-sm font-bold uppercase tracking-widest text-yellow-300">
                                         Gobernación
                                     </span>
                                 </div>
-                                <h1 className="text-4xl font-bold text-blue-950 sm:text-5xl">
+                                <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
                                     Gacetas Oficiales
                                 </h1>
-                                <p className="mt-4 text-base leading-7 text-slate-500">
+                                <p className="mt-5 max-w-3xl text-base leading-7 text-blue-100 sm:text-lg">
                                     Consulta las publicaciones oficiales de la Gobernación del Estado
                                     Anzoátegui y accede a sus documentos en formato PDF.
                                 </p>

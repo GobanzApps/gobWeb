@@ -2,12 +2,11 @@ import { Link } from '@inertiajs/react';
 import { Building2 } from 'lucide-react';
 
 interface Props {
-    activo: 'historia' | 'mandatos' | 'gacetas';
+    activo: 'entesAdscritos' | 'gacetas';
 }
 
 const enlaces = [
-    { id: 'historia', nombre: 'Historia', ruta: 'web.historia' },
-    { id: 'mandatos', nombre: 'Mandatos', ruta: 'web.mandatos' },
+    { id: 'entesAdscritos', nombre: 'Entes Adscritos', ruta: 'web.entes-adscritos' },
     { id: 'gacetas', nombre: 'Gacetas', ruta: 'web.gacetas' },
 ] as const;
 
